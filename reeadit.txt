@@ -1,0 +1,79 @@
+to create react write this command in your navigated terminal...
+=>   npm create vite@latest my-react-app
+for tailwind configuration 
+npm install -D tailwindcss postcss autoprefixer  or npm install -D tailwindcss@3 postcss autoprefixer
+
+npx tailwindcss init -p  or npx tailwindcss@latest init -p
+
+configure tailwind--------------------
+in tailwind.config.js  
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+append this in src/index.css
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+configuration with react + tailwind three in div dependency
+1
+npm create vite@latest my-react-app
+2
+✔ Select a framework → React
+✔ Select a variant → JavaScript (or TypeScript if you want)
+3
+cd my-react-app
+npm install
+npm run dev
+4
+npm install -D tailwindcss@3 postcss autoprefixer
+5
+npx tailwindcss init -p
+6
+tailwind.config.js
+postcss.config.js
+7
+in tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+8
+and in src/index.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+9
+for checking 
+src/app.jsx
+function App() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-green-600">
+      <h1 className="text-4xl font-bold text-white">
+        Tailwind CSS v3 is working ✅
+      </h1>
+    </div>
+  );
+}
+
+export default App;
+10
+ctrl+c 
+npm run div
