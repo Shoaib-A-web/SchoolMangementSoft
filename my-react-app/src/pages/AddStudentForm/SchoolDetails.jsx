@@ -157,8 +157,8 @@ export default function SchoolDetails({ errorCss, inputBoxCss, register, errors 
             <label className={labelforinp} htmlFor="section">Section</label>
                 <div className={inputBoxCss}>
                     <select className={inputcss} 
-                    {...register('stdClass',{
-                        required: "Student Class is required"
+                    {...register('stdSection',{
+                        required: "Student Section is required"
                     })}
                     id="section">
                         <option value="">Select Section</option>
@@ -180,8 +180,8 @@ export default function SchoolDetails({ errorCss, inputBoxCss, register, errors 
                     id="roll"
                     placeholder="Roll"
                     type="number"
-                    {...register('stdClass',{
-                        required: "Student Class is required"
+                    {...register('stdroll',{
+                        required: "Student Roll is required"
                     })}
                     ></input>
                     {errors.stdClass && <p className={errorCss}>{errors.stdClass.message}</p>}        

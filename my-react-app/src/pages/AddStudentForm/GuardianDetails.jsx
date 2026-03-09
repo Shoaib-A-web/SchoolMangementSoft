@@ -1,6 +1,19 @@
 import { useState } from "react"
+const inputBoxCss= "w-auto"
+// inputBoxCss
+function GuardianDetails({errorCss, register, errors, getValues, setValue, watch}){
+    
+    const handleSameAs = (checkField, presentField, permanentField) => {
 
-function GuardianDetails(){
+        const checked = getValues(checkField);
+
+        if (checked) {
+            const address = getValues(presentField);
+            setValue(permanentField, address);
+        } else {
+            setValue(permanentField, "");
+        }
+    };
     const [inputs, setInputs]= useState({
         //father detailes
         fname:"",
@@ -24,6 +37,7 @@ function GuardianDetails(){
         mpermanentadd:""
     })
 
+
     const handleChange= (e) => {    
         const name= e.target.name;
         const value= e.target.value;
@@ -33,7 +47,7 @@ function GuardianDetails(){
     const preinput= "flex justify-between"
     const preinput2="flex flex-col"
     const labelforinp= "font-semibold text-gray-700"
-    const inputcss="border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2"
+    const inputcss=" w-full border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2"
 
     return(
         <div className="flex flex-col xl:flex-row justify-between gap-4">
@@ -47,44 +61,56 @@ function GuardianDetails(){
                     <div className="flex flex-col md:w-1/2 gap-4 p-2">
                         <div className={preinput2}>
                             <label className={labelforinp} htmlFor="fname">Name</label>
-                            <input
-                            className={inputcss}
-                            id="fname"
-                            type="text"
-                            name="fname"
-                            onChange={handleChange}
-                            value={inputs.fname}
-                            placeholder="Father Name"
-                            ></input>
+                            <div className={inputBoxCss}>
+                                <input
+                                className={inputcss}
+                                id="fname"
+                                type="text"
+                                placeholder="Father Name"
+                                {...register('fname',{
+                                    required:"Father Name is required."
+                                })}
+                                ></input>
+                                {errors.fname && <p className={errorCss}>{errors.fname.message}</p>}
+                            </div>
                         </div>
 
                         <div className={preinput2}>
                             <label className={labelforinp} htmlFor="fqualificatin">Qualification</label>
-                            <select name="fqualificatin" 
-                            onChange={handleChange}
-                            value={inputs.fqualificatin}
-                            className={inputcss} id="fqualificatin">
-                                <option value="none">None</option>
-                                <option value="Matriculation">Matriculation</option>
-                                <option value="Intermediate">Intermediate</option>
-                                <option value="Graduate">Graduate</option>
-                                <option value="Post-Graduate">Post-Graduate</option>
-                            </select>
+                            <div className={inputBoxCss}>
+                                <select 
+                                {...register('fqualificatin',{
+                                    required:"Qualification is required."
+                                })}
+                                className={inputcss} id="fqualificatin">
+                                    <option value="none">None</option>
+                                    <option value="Matriculation">Matriculation</option>
+                                    <option value="Intermediate">Intermediate</option>
+                                    <option value="Graduate">Graduate</option>
+                                    <option value="Post-Graduate">Post-Graduate</option>
+                                </select>
+                                {errors.fqualificatin && <p className={errorCss}>{errors.fqualificatin.message}</p>}
+
+                            </div>
                         </div>
 
                         <div className={preinput2}>
                             <label className={labelforinp} htmlFor="foccupation">Occupation</label>
-                            <select name="foccupation" 
-                            onChange={handleChange}
-                            value={inputs.foccupation}
-                            className={inputcss} id="foccupation">
-                                <option value="none">None</option>
-                                <option value="House Hold">House Hold</option>
-                                <option value="Business">Business</option>
-                                <option value="Entrepreneur">Entrepreneur</option>
-                                <option value="Self-Employed">Self-Employed</option>
-                                <option value="Employee">Employee</option>
-                            </select>
+                            <div className={inputBoxCss}>
+                                <select 
+                                {...register('foccupation',{
+                                    required:"Occupation is required."
+                                })}
+                                className={inputcss} id="foccupation">
+                                    <option value="none">None</option>
+                                    <option value="House Hold">House Hold</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Entrepreneur">Entrepreneur</option>
+                                    <option value="Self-Employed">Self-Employed</option>
+                                    <option value="Employee">Employee</option>
+                                </select>
+                                {errors.foccupation && <p className={errorCss}>{errors.foccupation.message}</p>}
+                            </div>
                         </div>
 
                     </div>
@@ -92,73 +118,103 @@ function GuardianDetails(){
                     <div className="flex flex-col md:w-1/2 gap-4 p-2 ">
                         <div className={preinput2}>
                             <label className={labelforinp} htmlFor="fmobile">Mobile No.</label>
-                            <input
-                            type="tel"
-                            className={inputcss}
-                            id="fmobile"
-                            name="fmobile"
-                            onChange={handleChange}
-                            value={inputs.fmobile}
-                            placeholder="Father Mobile"
-                            />
+                            <div className={inputBoxCss}>
+                                <input
+                                type="tel"
+                                className={inputcss}
+                                id="fmobile"
+                                placeholder="Father Mobile"
+                                {...register('fmobile',{
+                                    required:"Mobile No is required."
+                                })}
+                                />
+                                {errors.fmobile && <p className={errorCss}>{errors.fmobile.message}</p>}
+                            </div>
                         </div>
 
                         <div className={preinput2}>
                             <label className={labelforinp} htmlFor="fwhatsapp">WhatsApp No.</label>
-                            <input
-                            type="tel"
-                            className={inputcss}
-                            id="fwhatsapp"
-                            name="fwhatsapp"
-                            onChange={handleChange}
-                            value={inputs.fwhatsapp}
-                            placeholder="Father WhatsApp"
-                            />
+                            <div className={inputBoxCss}>
+                                <input
+                                type="tel"
+                                className={inputcss}
+                                id="fwhatsapp"
+                                placeholder="Father WhatsApp"
+                                {...register('fwhatsapp',{
+                                    required:"WhatsApp No is required."
+                                })}
+                                />
+                                {errors.fwhatsapp && <p className={errorCss}>{errors.fwhatsapp.message}</p>}
+                            </div>
                         </div>
 
                         <div className={preinput2}>
                             <label className={labelforinp} htmlFor="fincome">Monthly Income(Rs.)</label>
-                            <input
-                            type="number"
-                            className={inputcss}
-                            id="fincome"
-                            name="fincome"
-                            onChange={handleChange}
-                            value={inputs.fincome}
-                            placeholder="Monthly Income"></input>
+                            <div className={inputBoxCss}>
+                                <input
+                                type="number"
+                                className={inputcss}
+                                placeholder="Monthly Income"
+                                id="fincome"
+                                {...register('fincome',{
+                                    required:"Monthly Income is required."
+                                })}
+                                ></input>
+                                {errors.fincome && <p className={errorCss}>{errors.fincome.message}</p>}
+                            </div>
                         </div>
                     </div>
                 </div>
                     <div className="flex flex-col gap-4">
                         <label className={labelforinp} htmlFor="fmail">E-mail ID</label>
-                        <input type="mail"
-                        name="fmail"
-                        onChange={handleChange}
-                        value={inputs.fmail} 
-                        id="fmail"
-                        placeholder="E-mail Id"
-                        className={inputcss}
-                        />
+                            <div className={inputBoxCss}>
+                                <input type="mail"
+                                {...register('fmail',{
+                                    required:"E-mail is required."
+                                })} 
+                                id="fmail"
+                                placeholder="E-mail Id"
+                                className={inputcss}
+                                />
+                                {errors.fmail && <p className={errorCss}>{errors.fmail.message}</p>}
+                            </div>
                         <br />
                     </div>
 
                     <div className={preinput2}>
                         <label className={labelforinp} htmlFor="fpresentadd">Present Address</label>
-                        <textarea name="fpresentadd" 
-                        onChange={handleChange}
-                        value={inputs.fpresentadd}
-                        id="fpresentadd" placeholder="Present Address" className={inputcss}></textarea>
+                            <div className={inputBoxCss}>
+                                <textarea
+                                {...register('fpresentadd',{
+                                    required:"Present Address is required."
+                                })} 
+                                id="fpresentadd" placeholder="Present Address" className={inputcss}></textarea>
+                                {errors.fpresentadd && <p className={errorCss}>{errors.fpresentadd.message}</p>}
+                            </div>
                     </div><br />
 
                     <div className={preinput2}>
                         <div className="flex gap-2">
                             <label className={labelforinp} htmlFor="fpermanentadd">Permanent Address</label> 
-                            <label className={labelforinp} htmlFor="fsameas"><input id="fsameas" type="checkbox" className={inputcss}></input>Same as above</label>
+                            <label className={labelforinp} htmlFor="fsameas">
+                            
+                                <input  
+                                {...register('fsameas',{ onChange: () => handleSameAs("fsameas","fpresentadd","fpermanentadd") })} 
+                                id="fsameas"
+                                type="checkbox"
+                                className='border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2 mx-4'></input>
+                                Same as above
+                                </label>
+                            
+
                         </div>
-                        <textarea name="fpermanentadd" 
-                        onChange={handleChange}
-                        value={inputs.fpermanentadd}
-                        id="fpermanentadd" placeholder="Permanent Address" className={inputcss}></textarea>
+                            <textarea 
+                            {...register('fpermanentadd',{
+                                required:"Present Address is required."
+                            })} 
+                            id="fpermanentadd" placeholder="Permanent Address" className={inputcss}></textarea>
+                            {errors.fpermanentadd && <p className={errorCss}>{errors.fpermanentadd.message}</p>}
+
                     </div>
 
                 
@@ -178,19 +234,22 @@ function GuardianDetails(){
                             <input
                             className={inputcss}
                             id="mname"
-                            type="text"
-                            name="mname"
-                            onChange={handleChange}
-                            value={inputs.mname}
                             placeholder="Mother Name"
+                            type="text"
+                            {...register('mname',{
+                                required:"Name is required."
+                            })} 
                             ></input>
+                            {errors.mname && <p className={errorCss}>{errors.mname.message}</p>}
+
                         </div>
 
                         <div className={preinput2}>
                             <label className={labelforinp} htmlFor="mqualificatin">Qualification</label>
-                            <select name="mqualificatin" 
-                            onChange={handleChange}
-                            value={inputs.mqualificatin}
+                            <select 
+                            {...register('mqualificatin',{
+                                required:"Qualification is required."
+                            })} 
                             className={inputcss} id="mqualificatin">
                                 <option value="none">None</option>
                                 <option value="Matriculation">Matriculation</option>
@@ -198,13 +257,16 @@ function GuardianDetails(){
                                 <option value="Graduate">Graduate</option>
                                 <option value="Post-Graduate">Post-Graduate</option>
                             </select>
+                            {errors.mqualificatin && <p className={errorCss}>{errors.mqualificatin.message}</p>}
+
                         </div>
 
                         <div className={preinput2}>
                             <label className={labelforinp} htmlFor="moccupation">Occupation</label>
-                            <select name="moccupation"
-                            onChange={handleChange}
-                            value={inputs.moccupation}
+                            <select 
+                            {...register('moccupation',{
+                                required:"Occupation is required."
+                            })}
                             className={inputcss} id="moccupation">
                                 <option value="none">None</option>
                                 <option value="House Hold">House Hold</option>
@@ -213,6 +275,8 @@ function GuardianDetails(){
                                 <option value="Self-Employed">Self-Employed</option>
                                 <option value="Employee">Employee</option>
                             </select>
+                            {errors.moccupation && <p className={errorCss}>{errors.moccupation.message}</p>}
+
                         </div>
 
                     </div>
@@ -224,12 +288,14 @@ function GuardianDetails(){
                             <input
                             type="tel"
                             className={inputcss}
-                            id="mmobile"
-                            name="mmobile"
-                            onChange={handleChange}
-                            value={inputs.mmobile}
                             placeholder="Mother Mobile"
+                            id="mmobile"
+                            {...register('mmobile',{
+                                required:"Mobile No is required."
+                            })}
                             />
+                            {errors.mmobile && <p className={errorCss}>{errors.mmobile.message}</p>}
+
                         </div>
 
                         <div className={preinput2}>
@@ -237,12 +303,14 @@ function GuardianDetails(){
                             <input
                             type="tel"
                             className={inputcss}
-                            id="mwhatsapp"
-                            name="mwhatsapp"
-                            onChange={handleChange}
-                            value={inputs.mwhatsapp}
                             placeholder="Mother WhatsApp"
+                            id="mwhatsapp"
+                            {...register('mwhatsapp',{
+                                required:"WhatsApp No is required."
+                            })}
                             />
+                            {errors.mwhatsapp && <p className={errorCss}>{errors.mwhatsapp.message}</p>}
+
                         </div>
 
                         <div className={preinput2}>
@@ -250,43 +318,64 @@ function GuardianDetails(){
                             <input
                             type="number"
                             className={inputcss}
+                            placeholder="Monthly Income"
                             id="mincome"
-                            name="mincome"
-                            onChange={handleChange}
-                            value={inputs.mincome}
-                            placeholder="Monthly Income"></input>
+                            {...register('mincome',{
+                                required:"Monthly Income is required."
+                            })}
+                            ></input>
+                            {errors.mincome && <p className={errorCss}>{errors.mincome.message}</p>}
+
                         </div>
                     </div>
                 </div>
                     <div className="flex flex-col gap-4">
                         <label className={labelforinp} htmlFor="mmail">E-mail ID</label>
-                        <input type="mail"
-                        name="mmail"
-                        onChange={handleChange}
-                        value={inputs.mmail}
+                        <input 
+                        type="mail"
+                        {...register('mmail',{
+                            required:"E-mail ID is required."
+                        })}
                         id="mmail"
                         placeholder="E-mail Id"
                         className={inputcss}
-                        /><br />
+                        />
+                            {errors.mmail && <p className={errorCss}>{errors.mmail.message}</p>}
+                        <br />
                     </div>
 
                     <div className={preinput2}>
                         <label className={labelforinp} htmlFor="mpresentadd">Present Address</label>
-                        <textarea name="mpresentadd"
-                        onChange={handleChange}
-                        value={inputs.mpresentadd}
+                        <textarea 
+                        {...register('mpresentadd',{
+                            required:"Present Address is required."
+                        })}
                         id="mpresentadd" placeholder="Present Address" className={inputcss}></textarea>
-                    </div><br />
+                    </div>
+                        {errors.mpresentadd && <p className={errorCss}>{errors.mpresentadd.message}</p>}
+                    <br />
 
                     <div className={preinput2}>
                         <div className="flex gap-2">
                             <label className={labelforinp} htmlFor="mpermanentadd">Permanent Address</label> 
-                            <label className={labelforinp} htmlFor="msameas"><input id="msameas" type="checkbox" className={inputcss}></input>Same as above</label>
+                            <label className={labelforinp} htmlFor="msameas">
+                                <input 
+                                {...register('msameas',{ onChange: () => handleSameAs("msameas","mpresentadd","mpermanentadd") })}
+                                id="msameas" 
+                                type="checkbox" 
+                                className=" border mx-4 border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2"
+                                ></input>
+                                Same as above
+                                </label>
+
                         </div>
-                        <textarea name="mpermanentadd" 
-                        onChange={handleChange}
-                        value={inputs.mpermanentadd}
+                        <textarea 
+                        {...register('mpermanentadd',{
+                            required:"Permanent Address is required."
+                        })}
                         id="mpermanentadd" placeholder="Permanent Address" className={inputcss}></textarea>
+                        {errors.mpermanentadd && <p className={errorCss}>{errors.mpermanentadd.message}</p>}
+
                     </div>
                 </div>
             </div>

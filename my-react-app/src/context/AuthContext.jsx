@@ -11,6 +11,10 @@ export const AuthProvider =({children}) => {
         userInfo ? JSON.parse(userInfo) : null
     );
 
+    const loginGuest = () => {
+        setUser({ guest: true })
+    }
+
     const login = (userData) => {
         localStorage.setItem("userInfo", JSON.stringify(userData));
         setUser(userData);
@@ -44,7 +48,7 @@ export const AuthProvider =({children}) => {
 
     return(
         <AuthContext.Provider value={{
-            user, login, logout
+            user, login, logout, loginGuest
         }}>
             {children}
 

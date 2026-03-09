@@ -8,6 +8,7 @@ import StudentAddress from "./AddStudentForm/StudentAddress"
 import TransportDetails from "./AddStudentForm/Transportdetails"
 import PreviousStd from "./AddStudentForm/PreviousStd"
 import SchoolDetails from "./AddStudentForm/SchoolDetails"
+import StudentAddPreview from "./AddStudentForm/StudentAddPreview"
 
 const preinput= "flex justify-between"
 const preinput2="flex flex-col"
@@ -19,13 +20,15 @@ function AddStudent(){
     const errorCss="text-red-500 text-xs md:text-sm"
     const inputBoxCss="w-full"
     const {
+        setValue,
+        getValues,
         register,
         control,
         handleSubmit,
         watch,
         trigger,
         formState:{ errors }
-    }= useForm();
+    }= useForm({ shouldUnregister: false });
     // usestate for backends
     const [addStudentDet, setAddStudentDet]= useState({
         // student details
@@ -48,11 +51,14 @@ function AddStudent(){
     }
     // usestate for steps
     const [step, setStep]= useState(1)
-    const steplist=["School Details", "Student Details", "Guardian Details", "Address", "Transport", "Previous Studies" ]
+    const steplist=["School Details", "Student Details", "Guardian Details", "Address", "Transport", "Previous Studies", "Preview" ]
 
     const nextStep= async () => {
         const valid= await trigger(); // validate current fild 
+        console.log("Validation result:", valid);
+        console.log("validation  error:",errors);
         if (valid) setStep(step + 1);
+
     }
     const prevStep= () => setStep(step - 1)
 
@@ -60,7 +66,7 @@ function AddStudent(){
         <h1 className="text-xl lg:text-2xl py-4 text-gray-700 font-bold">Add Student's details</h1>
         <div className="my-2 md:my-4 lg:my-8  rounded-lg bg-white">  
             {/* px-2 md:px-12 lg:px-auto md:px:8 py-4 it is messing in this dev */}
-            <form>
+            <form onSubmit={handleSubmit((data)=>console.log(data))}>
                 {/* 🔹 Step Tracker */}
                 <div className=" flex flex-wrap md:flex-row justify-between p-2 mb-8 text-sm rounded-t-lg bg-gray-600">
                     {steplist.map((label, index) => (
@@ -96,9 +102,10 @@ function AddStudent(){
                     <div className="text-xl px-2 md:px-12 lg:px-auto md:px:8 py-4">
                         <h2 className="text-2xl pb-4 text-gray-700 font-bold">{steplist[step -1]}</h2>
                         {/* space for student details */}
-                        <StudentDetailes control={control} errorCss={errorCss} inputBoxCss={inputBoxCss} register={register} errors={errors}/>
+                        <StudentDetailes control={control} errorCss={errorCss} inputBoxCss={inputBoxCss} register={register} errors={errors} watch={watch} setValue={setValue}/>
                         <div className="flex justify-between">
                             <button
+                                type="button"
                                 onClick={prevStep}
                                 className="px-6 py-2 border-2 border-gray-300 text-gray-600 rounded hover:bg-red-500 hover:text-white"
                             >
@@ -124,15 +131,17 @@ function AddStudent(){
                     <div className="text-xl flex flex-col gap-4 justify-center px-2 md:px-12 lg:px-auto md:px:8- pb-4">
                         <h2 className="text-2xl  pb-4 text-gray-700 font-bold">{steplist[step -1]}</h2>
                     {/* place for step three guardian details */}
-                    <GuardianDetails/>
+                    <GuardianDetails errorCss={errorCss} inputBoxCss={inputBoxCss} register={register} errors={errors} getValues={getValues} watch={watch} setValue={setValue}/>
                     <div className="flex justify-between">
                         <button
+                            type="button"
                             onClick={prevStep}
                             className="px-6 py-2 border-2 border-gray-300 text-gray-600 rounded hover:bg-red-500 hover:text-white"
                         >
                             Back
                         </button>
                         <button
+                            type="button"
                             onClick={nextStep}
                             className="px-6 py-2 bg-red-400 text-white rounded hover:bg-red-500" >
                             Next
@@ -147,15 +156,17 @@ function AddStudent(){
                     <div className="text-xl px-2 md:px-12 lg:px-auto md:px:8 py-4">
                         <h2 className="text-2xl pb-4 text-gray-700 font-bold">{steplist[step -1]}</h2>
                         {/* space for address */}
-                        <StudentAddress />
+                        <StudentAddress errorCss={errorCss} inputBoxCss={inputBoxCss} register={register} errors={errors} watch={watch} setValue={setValue}/>
                         <div className="flex justify-between">
                             <button
+                                type="button"
                                 onClick={prevStep}
                                 className="px-6 py-2 border-2 border-gray-300 text-gray-600 rounded hover:bg-red-500 hover:text-white"
                             >
                                 Back
                             </button>
                             <button
+                                type="button"
                                 onClick={nextStep}
                                 className="px-6 py-2 bg-red-400 text-white rounded hover:bg-red-500"
                             >
@@ -170,15 +181,17 @@ function AddStudent(){
                     <div className="text-xl px-2 md:px-12 lg:px-auto md:px:8 py-4">
                         <h2 className="text-2xl pb-4 text-gray-700 font-bold">{steplist[step -1]}</h2>
                         {/* space for transport */}
-                        <TransportDetails/>
+                        <TransportDetails errorCss={errorCss} register={register} errors={errors} watch={watch} setValue={setValue}/>
                         <div className="flex justify-between">
                             <button
+                                type="button"
                                 onClick={prevStep}
                                 className="px-6 py-2 border-2 border-gray-300 text-gray-600 rounded hover:bg-red-500 hover:text-white"
                             >
                                 Back
                             </button>
                             <button
+                                type="button"
                                 onClick={nextStep}
                                 className="px-6 py-2 bg-red-400 text-white rounded hover:bg-red-500"
                             >
@@ -193,16 +206,18 @@ function AddStudent(){
                     <div className="text-xl px-2 md:px-12 lg:px-auto md:px:8 py-4">
                         <h2 className="text-2xl pb-4 text-gray-700 font-bold">{steplist[step -1]}</h2>
                         {/* space for previous studies */}
-                        <PreviousStd />
+                        <PreviousStd errorCss={errorCss} inputBoxCss={inputBoxCss} register={register} errors={errors} watch={watch} setValue={setValue} />
                         <div className="flex justify-between">
                             <button
+                                type="button"
                                 onClick={prevStep}
                                 className="px-6 py-2 border-2 border-gray-300 text-gray-600 rounded hover:bg-red-500 hover:text-white"
                             >
                                 Back
                             </button>
                             <button
-                                // onClick={nextStep}
+                                type="button"
+                                onClick={nextStep}
                                 className="px-6 py-2 bg-red-400 text-white rounded hover:bg-red-500"
                             >
                                 Next
@@ -211,7 +226,31 @@ function AddStudent(){
 
                      </div>
                 )}
-                 
+                {/* privew of the student addmition form */}
+                {step === 7 &&(
+                    <div className="text-xl px-2 md:px-12 lg:px-auto md:px:8 py-4">
+                        <h2 className="text-2xl pb-4 text-gray-700 font-bold">{steplist[step -1]}</h2>
+                        {/* space for previous studies */}
+                        <StudentAddPreview watch={watch}/>
+                        <div className="flex justify-between">
+                            <button
+                                type="button"
+                                onClick={prevStep}
+                                className="px-6 py-2 border-2 border-gray-300 text-gray-600 rounded hover:bg-red-500 hover:text-white"
+                            >
+                                Back
+                            </button>
+                            <button
+                                type="button"
+                                // onClick={nextStep}
+                                className="px-6 py-2 bg-red-400 text-white rounded hover:bg-red-500"
+                            >
+                                Next
+                            </button>
+                        </div>
+
+                     </div>
+                )}                 
             </form>
         </div>
         </>)

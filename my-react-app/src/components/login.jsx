@@ -19,7 +19,7 @@ import { AuthContext } from "../context/AuthContext";
             formState:{ errors, isSubmitting },
         }=useForm();
 
-        const  {login }= useContext(AuthContext);
+        const  {login, loginGuest }= useContext(AuthContext);
 
         const onSubmit=async (data)=>{
 
@@ -43,7 +43,7 @@ import { AuthContext } from "../context/AuthContext";
                     }
                     
                     login(userInfo);
-                    navigate('/')
+                    navigate('/');
 
                 }
 
@@ -62,9 +62,8 @@ import { AuthContext } from "../context/AuthContext";
              ">
                 <h1 className=" text-2xl pt-8 font-bold text-gray-700">LOG IN</h1>
                 <img src={Dummyuser} alt="Longin Image" className="rounded-full size-40 border-2 border-red-400" />
-                <form className="flex flex-col gap-10 text-xs
-                    md:text-base
-                    "  onSubmit={handleSubmit(onSubmit)}>
+                <form className="flex flex-col gap-10 text-xs md:text-base" 
+                    onSubmit={handleSubmit(onSubmit)}>
                     <label className="flex items-center text-gray-700 font-bold" htmlFor="userType">User Type
                         <select 
                         className="mx-2 grow border-2 border-red-200 p-2 rounded hover:border-red-400" 
@@ -130,6 +129,13 @@ import { AuthContext } from "../context/AuthContext";
 
                     <a href="#" className=" underline underline-offset-1 text-sky-500 text-center pb-4">Create a new account</a>
                     <a href="#" className=" underline underline-offset-1 text-sky-500 text-center pb-4">forgate password</a>
+                    <a href="#" className=" underline underline-offset-1 text-sky-500 text-center pb-4"
+                        onClick={(e)=>{
+                            e.preventDefault();
+                            loginGuest();
+                            navigate('/');
+                        }}
+                    >Login ass guset</a>
                     </div>
 
                 </form>

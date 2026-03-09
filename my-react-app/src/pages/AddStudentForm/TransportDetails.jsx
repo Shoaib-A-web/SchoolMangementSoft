@@ -1,6 +1,12 @@
 import { useState } from "react"
 
-function TransportDetails(){
+function TransportDetails( {errorCss, register, errors} ){
+
+    const [ transport, setTransport ]= useState( false );
+
+    function handleTransport (){
+        setTransport( !transport );
+    }
     
     const [input, setInput]= useState({
         parentAadhar:"",
@@ -25,59 +31,71 @@ function TransportDetails(){
     
     return(
     <div className="flex flex-col gap-4 text-sm lg:text-xl mb-4">
-        <fieldset className="border-2 border-gray-300 p-4 md:p-12 rounded-lg flex flex-col gap-2 md:gap-8">
+        <fieldset className={`border-2 border-gray-300 p-4 md:p-12 rounded-lg flex flex-col gap-2 md:gap-8 ${!transport? "bg-gray-300":""}`}>
             <legend>
-                <input type="checkbox" id="enable" name="enable" className="size-5"></input>
-                <label htmlFor="enable" className="px-2">Enable</label>
+                <input type="checkbox" onClick={handleTransport} id="enable" name="enable" className="size-5"></input>
+                <label htmlFor="enable" className="px-2">{`${transport ? "Enable": "Disabled" }`}</label>
             </legend>
             <div className="flex flex-col md:flex-row justify-between">
                     <label htmlFor="busFee"
                     className="font-semibold text-gray-700 md:w-1/2"
                     >Select Bus Fee</label>
-                    <select 
-                    name="busFee" 
-                    id="busFee"
-                    onChange={handleChange}
-                    value={input.busFee}
-                    className="border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2 md:w-1/2"
-                    >
-                        <option value="">Bus Fee</option>
-                        <option value="200">200</option>
-                        <option value="300">300</option>
-                    </select>
+                        <select 
+                        {...register('busFee',{
+                            required: transport ? "Bus Fee is required" : false
+                            
+                        })}
+                        disabled={!transport}
+                        id="busFee"
+                        className="border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2 md:w-full"
+                        >
+                            <option value="">Bus Fee</option>
+                            <option value="200">200</option>
+                            <option value="300">300</option>
+                        </select>
+                        {errors.busFee && transport && <p className={errorCss}>{errors.busFee.message}</p>}  
             </div>
             <div className="flex flex-col md:flex-row justify-between gap-2 md:gap-6">
                 <div className={preinput}>
                     <label htmlFor="trinpNo"
                     className="font-semibold text-gray-700 md:w-1/2"
                     >Trip No</label>
-                    <select 
-                    name="trinpNo" 
-                    id="trinpNo"
-                    onChange={handleChange}
-                    value={input.trinpNo}
-                    className="border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2 w-1/2"
-                    >
-                        <option value="">Select Trip</option>
-                        <option value="132">132</option>
-                        <option value="4255">4255</option>
-                    </select>
+                    <div  className="w-1/2">
+                        <select 
+                        { ...register('tripNo',{
+                            required: transport ? "Trip No is required" : false
+
+                        })}
+                        disabled={!transport}
+                        id="tripNo"
+                        className="border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2 w-full"
+                        >
+                            <option value="">Select Trip</option>
+                            <option value="132">132</option>
+                            <option value="4255">4255</option>
+                        </select>
+                        {errors.tripNo && transport && <p className={errorCss}>{errors.tripNo.message}</p>}
+                    </div>
                 </div>
                 <div className={preinput}>
                     <label htmlFor="routeNo"
                     className="font-semibold text-gray-700 md:w-1/2"
                     >Route</label>
-                    <select 
-                    name="routeNo" 
-                    id="routeNo"
-                    onChange={handleChange}
-                    value={input.routeNo}
-                    className="border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2 w-1/2"
-                    >
-                        <option value="">Select Route</option>
-                        <option value="23">23</option>
-                        <option value="34">34</option>
-                    </select>
+                    <div  className="w-1/2">
+                        <select 
+                        { ...register('routeNo',{
+                            required: transport ? "Route No is required" : false
+                        })}
+                        disabled={!transport}
+                        id="routeNo"
+                        className="border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2 w-full"
+                        >
+                            <option value="">Select Route</option>
+                            <option value="23">23</option>
+                            <option value="34">34</option>
+                        </select>
+                        {errors.routeNo && transport && <p className={errorCss}>{errors.routeNo.message}</p>}
+                    </div>
                 </div>
             </div>
             <div className="flex flex-col md:flex-row justify-between gap-2 md:gap-6">
@@ -85,33 +103,42 @@ function TransportDetails(){
                     <label htmlFor="vahicalNo"
                     className="font-semibold text-gray-700 md:w-1/2"
                     >Vahical No</label>
-                    <select 
-                    name="vahicalNo" 
-                    id="vahicalNo"
-                    onChange={handleChange}
-                    value={input.vahicalNo}
-                    className="border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2 w-1/2"
-                    >
-                        <option value="">Select Vahical No</option>
-                        <option value="5215">5215</option>
-                        <option value="7895">7895</option>
-                    </select>
+                    <div  className="w-1/2">
+                        <select 
+                        disabled={!transport}
+                        id="vahicalNo"
+                        {...register('vahicalNo',{
+                            required: transport ? "Vahical No is required" : false
+
+                        })}
+                        className="border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2 w-full"
+                        >
+                            <option value="">Select Vahical No</option>
+                            <option value="5215">5215</option>
+                            <option value="7895">7895</option>
+                        </select>
+                        {errors.vahicalNo && transport && <p className={errorCss}>{errors.vahicalNo.message}</p>}
+                    </div>
                 </div>
                 <div className={preinput}>
                     <label htmlFor="stopage"
                     className="font-semibold text-gray-700 md:w-1/2"
                     >Stopage</label>
-                    <select 
-                    name="stopage" 
-                    id="stopage"
-                    onChange={handleChange}
-                    value={input.stopage}
-                    className="border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2 w-1/2"
-                    >
-                        <option value="">Select Stopage</option>
-                        <option value="Dhanbad">Dhanbad</option>
-                        <option value="Bokaro">Bokaro</option>
-                    </select>
+                    <div  className="w-1/2">
+                        <select 
+                        disabled={!transport}
+                        id="stopage"
+                        {...register('stopage', {
+                            required: transport ? "Stopage is required" : false
+                        })}
+                        className="border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2 w-full"
+                        >
+                            <option value="">Select Stopage</option>
+                            <option value="Dhanbad">Dhanbad</option>
+                            <option value="Bokaro">Bokaro</option>
+                        </select>
+                        {errors.stopage && transport && <p className={errorCss}>{errors.stopage.message}</p>}
+                    </div>
                 </div>
             </div>
                 
@@ -122,23 +149,26 @@ function TransportDetails(){
                 <div className={preinput2}>
                     <label className={labelforinp} htmlFor="studentAadhar"> Student Aadhar</label>
                     <input
-                    type="file"
                     className={inputcss}
+                    type="file"
                     id="studentAadhar"
-                    name="studentAadhar"
-                    onChange={handleChange}
+                    {...register('studentAadhar', {
+                        required:"Student Aadhar is required"
+                    })}
                     placeholder="Passing year"
                     />
+                        {errors.studentAadhar && <p className={errorCss}>{errors.studentAadhar.message}</p>}
+
                 </div>
                 <div className="flex flex-col justify-between w-full">
                     <label htmlFor="studetParentRelation"
                     className="font-semibold text-gray-700"
                     >Relation with parent</label>
                     <select 
-                    name="studetParentRelation" 
                     id="studetParentRelation"
-                    onChange={handleChange}
-                    value={input.studetParentRelation}
+                    {...register('studetParentRelation', {
+                        required:"Relation with parent is required"
+                    })}
                     className="border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2 "
                     >
                         <option value="">Select Relation</option>
@@ -148,6 +178,8 @@ function TransportDetails(){
                         <option value="Sister">Sister</option>
                         <option value="Other">Other</option>
                     </select>
+                        {errors.studetParentRelation && <p className={errorCss}>{errors.studetParentRelation.message}</p>}
+
                 </div>
                 <div className={preinput2}>
                     <label className={labelforinp} htmlFor="parentAadhar"> Parent's Aadhar</label>
@@ -155,9 +187,12 @@ function TransportDetails(){
                     type="file"
                     className={inputcss}
                     id="parentAadhar"
-                    name="parentAadhar"
-                    onChange={handleChange}
+                    {...register('parentAadhar', {
+                        required:"Parent's Aadha is required"
+                    })}
                     />
+                        {errors.parentAadhar && <p className={errorCss}>{errors.parentAadhar.message}</p>}
+
                 </div>
             
         </fieldset>

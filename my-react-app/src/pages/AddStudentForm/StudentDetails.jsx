@@ -1,9 +1,9 @@
 import { useState } from "react"
 import Select from 'react-select';
-import { Controller } from "react-hook-form";
+import { Controller, Watch } from "react-hook-form";
 import Img from "../../assets/dummy/dummy-user.png"
 
-function StudentDetailes({ control, errorCss, inputBoxCss, register, errors }) {
+function StudentDetailes({ control, errorCss, inputBoxCss, register, errors, setValue }) {
     const preinput= "flex justify-between"
     const preinput2="flex flex-col"
     const labelforinp= "font-semibold text-gray-700 w-1/2"
@@ -16,14 +16,22 @@ function StudentDetailes({ control, errorCss, inputBoxCss, register, errors }) {
     const [imageFile, setImageFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(Img);
     
-    const handleFileChange= (e) =>{
+    const  handleFileChange= (e) =>{
         const file= e.target.files[0];
         if ( file && file.type.substring(0,5) === "image"){
             setImageFile(file);
             setPreviewUrl(URL.createObjectURL(file));
+
+            setValue("stdImage", {
+                file: file,
+                preview: previewUrl
+            }
+            );
         }else{
             setImageFile(null);
             setPreviewUrl(Img);
+
+            setValue("stdImage", null);
         }
     }
     const [inputs, setInputs]= useState({
@@ -64,7 +72,7 @@ function StudentDetailes({ control, errorCss, inputBoxCss, register, errors }) {
                             {/* first column of Guardian details */}
                             <div className="flex flex-col md:w-1/2 gap-4 pb-4 md:pr-6">
                                     {/* kskdjdkdnskdns */}
-                                     <div className="mb-4">
+                                    <div className="mb-4">
                                         <label className="font-semibold text-gray-700 block mb-2">
                                             Select Colors
                                         </label>
@@ -167,28 +175,37 @@ function StudentDetailes({ control, errorCss, inputBoxCss, register, errors }) {
                                 <div className={preinput}>
                                     <label className={labelforinp} htmlFor="mothertongue">Mother Tongue</label>
                                     <select className={inputcss} 
-                                    onChange={handleChange}
-                                    value={inputs.mothertongue}
-                                    name="mothertongue" id="mothertongue">
+                                    {...register('mothertongue',{
+                                        required:"Select mother tongue is required."
+                                    })} 
+                                    id="mothertongue">
                                         <option value="hindi">Hindi</option>
                                         <option value="english">English</option>
                                         <option value="bangali">Bangali</option>
                                     </select>
+                                    {errors.mothertongue && <p className={errorCss}>{errors.mothertongue.message}</p>}
+
                                 </div>                                
                                 <div className={preinput}>
-                                    <label className={labelforinp} htmlFor="religion">Religion</label>
-                                    <select className={inputcss} 
-                                    onChange={handleChange}
-                                    value={inputs.religion}
-                                    name="religion" id="religion">
-                                        <option value="hinduism">Hinduism</option>
-                                        <option value="islam">Islam</option>
-                                        <option value="christianity">Christianity</option>
-                                        <option value="buddhism">Buddhism</option>
-                                        <option value="jainism">Jainism</option>
-                                        <option value="sikhism">Sikhism</option>
-                                        <option value="other"></option>
-                                    </select>
+                                    <label className={labelforinp} htmlFor="stdReligion">Religion</label>
+                                    <div className={inputBoxCss}>
+                                        <select className={inputcss} 
+                                        {...register('stdReligion',{
+                                            required:"Select Religion is required."
+                                        })}  
+                                        id="stdReligion">
+                                            <option value="">Select Religion</option>
+                                            <option value="hinduism">Hinduism</option>
+                                            <option value="islam">Islam</option>
+                                            <option value="christianity">Christianity</option>
+                                            <option value="buddhism">Buddhism</option>
+                                            <option value="jainism">Jainism</option>
+                                            <option value="sikhism">Sikhism</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                        {errors.stdReligion && <p className={errorCss}>{errors.stdReligion.message}</p>}
+                                    </div>
+
                                 </div>
 
                                 <div className={preinput}>
@@ -199,60 +216,77 @@ function StudentDetailes({ control, errorCss, inputBoxCss, register, errors }) {
                                         id="bankname"
                                         placeholder="Bank Name"
                                         type="text"
-                                        name="bankname"
-                                        onChange={handleChange}
-                                        value={inputs.bankname}
-                                        ></input>
-                                        
+                                        {...register('bankname',{
+                                            required:"Bank name is required."
+                                        })}  
+                                    ></input>
+                                    {errors.bankname && <p className={errorCss}>{errors.bankname.message}</p>}
                                     </div>
                                 </div>
-                                 <div className={preinput}>
+                                <div className={preinput}>
                                     <label className={labelforinp} htmlFor="identitymark">Mark of Identity</label>
-                                    <input
-                                    className={inputcss}
-                                    id="identitymark"
-                                    type="text"
-                                    name="identitymark"
-                                    onChange={handleChange}
-                                    value={inputs.identitymark}
-                                    placeholder="Identity mark"
-                                    ></input>
+                                    <div className={inputBoxCss}>
+                                        <input
+                                        className={inputcss}
+                                        placeholder="Identity mark"
+                                        id="identitymark"
+                                        type="text"
+                                        {...register('identitymark',{
+                                            required:"Identity mark is required."
+                                        })}  
+                                        ></input>
+                                        {errors.identitymark && <p className={errorCss}>{errors.identitymark.message}</p>}
+                                    </div>
+
                                 </div>
 
                                 <div className={preinput}>
                                     <label className={labelforinp} htmlFor="dob">D.O.B</label>
-                                    <input
-                                    className={inputcss}
-                                    id="dob"
-                                    type="date"
-                                    name="dob"
-                                    onChange={handleChange}
-                                    value={inputs.dob}
-                                    ></input>
+                                    <div className={inputBoxCss}>
+
+                                        <input
+                                        className={inputcss}
+                                        id="dob"
+                                        type="date"
+                                        {...register('dob',{
+                                            required:"D.O.B is required."
+                                        })}  
+                                        ></input>
+                                        {errors.dob && <p className={errorCss}>{errors.dob.message}</p>}
+                                    </div>
+
                                 </div>                                
                                 
                                 <div className={preinput}>
                                     <label className={labelforinp} htmlFor="category">Catogory</label>
-                                    <select className={inputcss} 
-                                    onChange={handleChange}
-                                    value={inputs.category}
-                                    name="category" id="category">
-                                        <option value="general">General</option>
-                                        <option value="obc">O.B.C</option>
-                                        <option value="sc">SC</option>
-                                        <option value="st">St</option>
-                                    </select>
+                                    <div className={inputBoxCss}>
+                                        <select className={inputcss} 
+                                        {...register('category',{
+                                            required:"Category is required."
+                                        })}   
+                                        id="category">
+                                            <option value="">Select category</option>
+                                            <option value="general">General</option>
+                                            <option value="obc">O.B.C</option>
+                                            <option value="sc">SC</option>
+                                            <option value="st">St</option>
+                                        </select>
+                                        {errors.category && <p className={errorCss}>{errors.category.message}</p>}
+                                    </div>
                                 </div>                                
                                 
                                 <div className={preinput}>
                                     <label className={labelforinp} htmlFor="bpl">B.P.L Card</label>
                                     <select className={inputcss} 
-                                    onChange={handleChange}
-                                    value={inputs.bpl}
-                                    name="bpl" id="bpl">
+                                    {...register('bpl',{
+                                        required:"B.P.L Card is required."
+                                    })}  
+                                    id="bpl">
                                         <option value="no">No</option>
                                         <option value="yes">Yes</option>
                                     </select>
+                                    {errors.bpl && <p className={errorCss}>{errors.bpl.message}</p>}
+
                                 </div>                                
                             </div>
                             {/* second column of guardian details */}
@@ -260,61 +294,74 @@ function StudentDetailes({ control, errorCss, inputBoxCss, register, errors }) {
                                 <div className={preinput}>
                                     <label className={labelforinp} htmlFor="minority">Minority</label>
                                     <select className={inputcss} 
-                                    onChange={handleChange}
-                                    value={inputs.minority}
-                                    name="minority" id="minority">
+                                    {...register('minority',{
+                                        required:"Minority is required."
+                                    })}   
+                                    id="minority">
                                         <option value="no">No</option>
                                         <option value="yes">Yes</option>
                                     </select>
+                                    {errors.minority && <p className={errorCss}>{errors.minority.message}</p>}
+                                    
                                 </div>
-
-
-                               
                                 <div className={preinput}>
                                     <label className={labelforinp} htmlFor="uid">Aadhar No.</label>
-                                    <input
-                                    className={inputcss}
-                                    id="uid"
-                                    type="number"
-                                    name="uid"
-                                    onChange={handleChange}
-                                    value={inputs.uid}
-                                    placeholder="Aadhar No."
-                                    ></input>
+                                    <div className={inputBoxCss}>
+                                        <input
+                                        className={inputcss}
+                                        placeholder="Aadhar No."
+                                        id="uid"
+                                        type="number"
+                                        {...register('uid',{
+                                            required:"Aadhar No is required."
+                                        })}  
+                                        ></input>
+                                        {errors.uid && <p className={errorCss}>{errors.uid.message}</p>}
+                                    </div>
                                 </div>
 
                                 <div className={preinput}>
                                     <label className={labelforinp} htmlFor="bankAc">Bank Account No.</label>
-                                    <input
-                                    className={inputcss}
-                                    id="bankAc"
-                                    type="number"
-                                    name="bankAc"
-                                    onChange={handleChange}
-                                    value={inputs.bankAc}
-                                    placeholder="Account No."
-                                    ></input>
+                                    <div className={inputBoxCss}>
+                                        <input
+                                        className={inputcss}
+                                        placeholder="Account No."
+                                        id="bankAc"
+                                        type="number"
+                                        {...register('bankAc',{
+                                            required:"Aadhar No is required."
+                                        })} 
+                                        ></input>
+                                        {errors.bankAc && <p className={errorCss}>{errors.bankAc.message}</p>}
+                                    </div>
                                 </div>
                                         
                                 <div className={preinput}>
                                     <label className={labelforinp} htmlFor="hostel">Hostel Facility</label>
                                     <select className={inputcss} 
-                                    onChange={handleChange}
-                                    value={inputs.hostel}
-                                    name="hostel" id="hostel">
+                                    {...register('hostel',{
+                                        required:"Hostel is required."
+                                    })}
+                                    id="hostel">
                                         <option value="no">No</option>
                                         <option value="yes">Yes</option>
                                     </select>
+                                    {errors.hostel && <p className={errorCss}>{errors.hostel.message}</p>}
+
                                 </div>
 
                                 <div className={preinput2}>
                                     <label className={labelforinp} htmlFor="deo"> D.E.O Permission
                                     </label>
                                     <textarea 
-                                    onChange={handleChange}
-                                    value={inputs. deo}
-                                    className={`border w-full border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2`} name="deo" id="deo" placeholder="permissin">
+                                    {...register('deo',{
+                                        required:"D.E.O Permission is required."
+                                    })}
+                                    className={`border w-full border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2`} id="deo" placeholder="permissin">
                                     </textarea>
+                                    {errors.deo && <p className={errorCss}>{errors.deo.message}</p>}
+
+
 
 
                                 </div>
@@ -328,8 +375,9 @@ function StudentDetailes({ control, errorCss, inputBoxCss, register, errors }) {
                                     className="grow mb-4 visible"
                                     type="file"
                                     accept="image/*"
-                                    onChange={handleFileChange}
                                     hidden
+                                    {...register('stdImage')}
+                                    onChange={handleFileChange}
                                     ></input>
                                 </div>
                             </div>
