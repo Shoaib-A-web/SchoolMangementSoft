@@ -1,3 +1,4 @@
+// icon imports
 import { RiMenuFoldFill } from "react-icons/ri";
 import { CiSearch } from "react-icons/ci";
 import { RiNotification2Line } from "react-icons/ri";
@@ -7,20 +8,54 @@ import { CgProfile } from "react-icons/cg";
 import { MdManageAccounts } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import { BsThreeDotsVertical } from "react-icons/bs";
-
-import Imgdemo from "../assets/dummy/dummy-user.png"
-import {  useContext, useState } from "react";
 import { LuLogOut } from "react-icons/lu";
+
+// image imports
+import Imgdemo from "../assets/dummy/dummy-user.png"
+
+// context imports
+import {  useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+
+// Component imports
+import ProfileMenu from "./ProfileMenu";
+
+
 
 
 function TopBar({isOpen, sideToggle}){
+    
+    const [profielBorder, setProfielBorder]= useState('');
+
     const [profile, setProfile]= useState(false)
     const [openProfile, setOpenProfile]= useState(false)
     const [isNotification, setIsNotification] =useState(false)
     const demoName= "XXXXXX";
 
-    const {logout, user}= useContext(AuthContext);
+    //context variable and methods 
+    const { user}= useContext(AuthContext);
+
+    useEffect(()=>{
+
+        switch (user?.userData.userType) {
+        case 'Admin':
+            setProfielBorder('border-red-300');
+            break;
+
+        case 'Teacher':
+            setProfielBorder('border-green-300');
+            break;
+
+        case 'Student':
+            setProfielBorder('border-yellow-300');
+            break;
+
+        default:
+            setProfielBorder('border-gray-300');
+    }         
+    },[user]);
+
+
     const handelprofiel = () =>{
         if(isNotification) setIsNotification(false)
         setProfile(!(profile))
@@ -34,7 +69,6 @@ function TopBar({isOpen, sideToggle}){
     const handelOpneProfle=() => {
         setOpenProfile(!(openProfile))
     }
-    
 
     return(<>
         <div className="flex justify-between bg-white items-center p-2 lg:p-4 border-b-2 border-gray-300 shadow-2xl">
@@ -81,45 +115,21 @@ function TopBar({isOpen, sideToggle}){
                         
                 <button 
                 onClick={handelprofiel}
-                className="flex items-center gap-4"
+                className="flex items-center gap-4 "
                 >
+                <div className={`border-4 rounded-full ${profielBorder}`}>
                     <img
-                    className=" size-8 rounded-full"
+                    className=" size-8 rounded-full  border-2 border-white"
                     src={Imgdemo} alt="demmy" />
+                </div>
                     <span>
-                        {(user)? user.name : demoName}
+                        {(user)? (user?.userData?.first_name) : demoName}
                     </span>
                     <div>
                         <IoIosArrowDown />
                     </div>
                     { profile && (
-                        <div className="absolute top-full right-0 text-white rounded-xl mt-6 p-4 bg-gray-600 flex flex-col gap-4 z-10">
-                            <div className="flex flex-col pb-2 border-b-[1px] border-blue-50">
-                                <span className="font-semibold text-lg">{(user)? user.name : demoName}</span>
-                                <span className="text-sm">{(user)? user.email : demoName}</span>
-                            </div>
-                            <ul className="border-b-[1px] pb-2 border-blue-50">
-                                <li >
-                                    <a href="#" className="flex gap-2 items-center">
-                                        <MdManageAccounts/>
-                                        <span>Edit Profile</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="flex gap-2 items-center">
-                                        <CgProfile/>
-                                        <span>Acount Setting</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                            <div>
-                                <a href="#" className="flex gap-2 items-center">
-                                    <CiLogout/>
-                                    <span onClick={logout}>logout</span>
-                                </a>
-                            </div>
-                        </div>
+                        <ProfileMenu/>
                     )}
                 </button>  
             </div>
@@ -156,41 +166,17 @@ function TopBar({isOpen, sideToggle}){
                 onClick={handelprofiel}
                 className="flex items-center gap-4"
                 >
-                    <img
-                    className=" size-8 rounded-full"
-                    src={Imgdemo} alt="demmy" />
-                    <span>{(user)? user.name : demoName}</span>
+                    <div className={`border-4 rounded-full ${profielBorder}`}>
+                        <img
+                        className=" size-8 rounded-full"
+                        src={Imgdemo} alt="demmy" />
+                    </div>
+                    <span>{(user)? (user?.userData?.first_name) : demoName}</span>
                     <div>
                         <IoIosArrowDown />
                     </div>
                     { profile && (
-                        <div className="absolute top-2/3 right-0 rounded-xl mt-6 p-4 bg-gray-500 flex flex-col gap-4 z-10 text-white">
-                            <div className="flex flex-col pb-2 border-b-[1px] border-blue-50">
-                                <span className="font-semibold text-lg">{(user)? user.name : demoName}</span>
-                                <span className="text-sm">{(user)? user.email : demoName}</span>
-                            </div>
-                            <ul className="border-b-[1px] pb-2 border-blue-50">
-                                <li >
-                                    <a href="#" className="flex gap-2 items-center">
-                                        <MdManageAccounts/>
-                                        <span>Edit Profile</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="flex gap-2 items-center">
-                                        <CgProfile/>
-                                        <span>Acount Setting</span>
-                                    </a>
-                                </li>
-
-                            </ul>
-                            <div>
-                                <a href="#" className="flex gap-2 items-center">
-                                    <CiLogout/>
-                                    <span onClick={logout}>logout</span>
-                                </a>
-                            </div>
-                        </div>
+                        <ProfileMenu/>
                     )}
                 </button>  
         </div>

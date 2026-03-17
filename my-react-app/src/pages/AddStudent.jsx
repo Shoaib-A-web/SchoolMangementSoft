@@ -28,27 +28,13 @@ function AddStudent(){
         watch,
         trigger,
         formState:{ errors }
-    }= useForm({ shouldUnregister: false });
-    // usestate for backends
-    const [addStudentDet, setAddStudentDet]= useState({
-        // student details
-        session:"",
-        dateOfJoin:"",
-        S_id:"",
-        admFormNo:"",
-        admNo:"",
-        stdType:"",
-        stdName:"",
-        class:"",
-        section:"",
-        roll:"",
-    });
+    }= useForm({ 
+        shouldUnregister: false,
+        mode: "all"
+     });
+   
 
-    const handleChange= (e) => {    
-        const name= e.target.name;
-        const value= e.target.value;
-        setAddStudentDet({...addStudentDet,[name]:value} )
-    }
+    
     // usestate for steps
     const [step, setStep]= useState(1)
     const steplist=["School Details", "Student Details", "Guardian Details", "Address", "Transport", "Previous Studies", "Preview" ]
@@ -156,10 +142,10 @@ function AddStudent(){
                     <div className="text-xl px-2 md:px-12 lg:px-auto md:px:8 py-4">
                         <h2 className="text-2xl pb-4 text-gray-700 font-bold">{steplist[step -1]}</h2>
                         {/* space for address */}
-                        <StudentAddress errorCss={errorCss} inputBoxCss={inputBoxCss} register={register} errors={errors} watch={watch} setValue={setValue}/>
+                        <StudentAddress errorCss={errorCss} inputBoxCss={inputBoxCss} register={register} errors={errors} watch={watch} getValues={getValues} setValue={setValue}/>
                         <div className="flex justify-between">
                             <button
-                                type="button"
+                                type="button"   
                                 onClick={prevStep}
                                 className="px-6 py-2 border-2 border-gray-300 text-gray-600 rounded hover:bg-red-500 hover:text-white"
                             >
@@ -220,7 +206,7 @@ function AddStudent(){
                                 onClick={nextStep}
                                 className="px-6 py-2 bg-red-400 text-white rounded hover:bg-red-500"
                             >
-                                Next
+                                Preview
                             </button>
                         </div>
 
@@ -231,7 +217,7 @@ function AddStudent(){
                     <div className="text-xl px-2 md:px-12 lg:px-auto md:px:8 py-4">
                         <h2 className="text-2xl pb-4 text-gray-700 font-bold">{steplist[step -1]}</h2>
                         {/* space for previous studies */}
-                        <StudentAddPreview watch={watch}/>
+                        <StudentAddPreview watch={watch} getValues={getValues} setValue={setValue}/>
                         <div className="flex justify-between">
                             <button
                                 type="button"
@@ -245,7 +231,7 @@ function AddStudent(){
                                 // onClick={nextStep}
                                 className="px-6 py-2 bg-red-400 text-white rounded hover:bg-red-500"
                             >
-                                Next
+                                Submit
                             </button>
                         </div>
 

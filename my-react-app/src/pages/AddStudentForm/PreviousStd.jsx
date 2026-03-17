@@ -35,7 +35,7 @@ function PreviousStd({ errorCss, register, errors}){
 
     
     const handleChange = (e) => {
-    const { name, value } = e.target;
+        const { name, value } = e.target;
 
         setInput(prev => ({...prev,[name]: value}));
     };
@@ -135,61 +135,65 @@ function PreviousStd({ errorCss, register, errors}){
                                 </div>
                             </div>
                             <div className="flex flex-col lg:flex-row gap-4">
-                                <div className={preinput2}>
-                                    <label className={labelforinp} htmlFor="affilated">D:- Affilated to</label>
-                                    <input
-                                    type="text"
-                                    disabled= {!preCoalification ? true : false}
-                                    className={inputcss}
-                                    id="affilated"
-                                    {...register('affilated',{
-                                        required: "Affilated is required" 
-                                    })}
-                                    placeholder="Affliation From"
-                                    />
-                                    {errors.affilated && preCoalification && <p className={errorCss}>{errors.affilated.message}</p>}  
+                                <div >
+                                    <div className={preinput2}>
+                                        <label className={labelforinp} htmlFor="affilated">D:- Affilated to</label>
+                                        <input
+                                        type="text"
+                                        disabled= {!preCoalification ? true : false}
+                                        className={inputcss}
+                                        id="affilated"
+                                        {...register('affilated',{
+                                            required: "Affilated is required" 
+                                        })}
+                                        placeholder="Affliation From"
+                                        />
+                                        {errors.affilated && preCoalification && <p className={errorCss}>{errors.affilated.message}</p>}  
+                                    </div>
+                                    <div className={preinput2}>
+                                        <label className={labelforinp} htmlFor="medium">E:- Medium of school</label>
+                                        <input
+                                        type="text"
+                                        disabled= {!preCoalification ? true : false}
+                                        className={inputcss}
+                                        id="medium"
+                                        {...register('medium',{
+                                            required: "Medium of school is required" 
+                                        })}
+                                        placeholder="Mediun"
+                                        />
+                                        {errors.medium && preCoalification && <p className={errorCss}>{errors.medium.message}</p>}  
+                                    </div>
                                 </div>
-                                <div className={preinput2}>
-                                    <label className={labelforinp} htmlFor="medium">E:- Medium of school</label>
-                                    <input
-                                    type="text"
-                                    disabled= {!preCoalification ? true : false}
-                                    className={inputcss}
-                                    id="medium"
-                                    {...register('medium',{
-                                        required: "Medium of school is required" 
-                                    })}
-                                    placeholder="Mediun"
-                                    />
-                                    {errors.medium && preCoalification && <p className={errorCss}>{errors.medium.message}</p>}  
-                                </div>
-                                <div className={preinput2}>
-                                    <label className={labelforinp} htmlFor="lastClass">F:- Class in which Reading</label>
-                                    <input
-                                    type="text"
-                                    disabled= {!preCoalification ? true : false}
-                                    className={inputcss}
-                                    id="lastClass"
-                                    {...register('lastClass',{
-                                        required: "Class is required" 
-                                    })}
-                                    placeholder="Last Class"
-                                    />
-                                    {errors.lastClass && preCoalification && <p className={errorCss}>{errors.lastClass.message}</p>}  
-                                </div>
-                                <div className={preinput2}>
-                                    <label className={labelforinp} htmlFor="rollno">G:- Roll No.</label>
-                                    <input
-                                    type="number"
-                                    disabled= {!preCoalification ? true : false}
-                                    className={inputcss}
-                                    id="rollno"
-                                    {...register('rollno',{
-                                        required: "Roll No is required" 
-                                    })}
-                                    placeholder="Last Roll No."
-                                    />
-                                    {errors.rollno && preCoalification && <p className={errorCss}>{errors.rollno.message}</p>}  
+                                <div >
+                                    <div className={preinput2}>
+                                        <label className={labelforinp} htmlFor="lastClass">F:- Class in which Reading</label>
+                                        <input
+                                        type="text"
+                                        disabled= {!preCoalification ? true : false}
+                                        className={inputcss}
+                                        id="lastClass"
+                                        {...register('lastClass',{
+                                            required: "Class is required" 
+                                        })}
+                                        placeholder="Last Class"
+                                        />
+                                        {errors.lastClass && preCoalification && <p className={errorCss}>{errors.lastClass.message}</p>}  
+                                    </div>
+                                    <div className={preinput2}>
+                                        <label className={labelforinp} htmlFor="rollno">G:- Roll No.</label>
+                                        <input
+                                        type="number"
+                                        disabled= {!preCoalification ? true : false}
+                                        className={inputcss}
+                                        id="rollno"
+                                        {...register('rollno',{
+                                            required: "Roll No is required" 
+                                        })}
+                                        placeholder="Last Roll No."
+                                        />
+                                        {errors.rollno && preCoalification && <p className={errorCss}>{errors.rollno.message}</p>}  
+                                    </div>
                                 </div>
                             </div>
                             <div className="flex flex-col md:flex-row gap-4">

@@ -9,11 +9,20 @@ use App\Http\Controllers\TempStudentsController;
 use App\Http\Controllers\Usercontroller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserTypeController;
+use GuzzleHttp\Middleware;
 
-Route::post('authenticate',[AuthenticationController::class,'authenticate']); // api for loging
+Route::post('authenticate',[AuthenticationController::class,'authenticate']); // api main user or supper user table  for loging
+
+Route::post('/userType/login',[UserTypeController::class,'login']);  // api for sub user or child user with userType table
+Route::patch('/users/{id}', [UserTypeController::class, 'update']);  // api for update user-type table
+Route::get('/users/{id}', [UserTypeController::class, 'show']);  // api for getting data of spacific id user-type table
+
 Route::middleware('auth:sanctum')->post('logout', [AuthenticationController::class, 'logout']); //api for logout
 
+Route::apiResource('user-types',UserTypeController::class);    // route for user_types table.
 Route::middleware('auth:senctum')->group(function (){
+    
     Route::post('tempStudent',[TempStudentsController::class, 'store']);   // api for insertin data 
     });
     Route::get('getTempStudent',[TempStudentsController::class,'index']);  //api for getting all data from tamp student

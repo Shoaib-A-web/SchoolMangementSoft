@@ -29,7 +29,7 @@ export default function SchoolDetails({ errorCss, inputBoxCss, register, errors 
                         <option value="2000-05">2000-5</option>
                         <option value="2000-06">2000-6</option>
                     </select>
-                    {errors.session && <p className={errorCss}>{errors.session.message}</p>}
+                    {errors.session &&( <p className={errorCss}>{errors.session.message}</p>)}
                 </div>
             </div>
             <div className={preinput}>
@@ -77,7 +77,7 @@ export default function SchoolDetails({ errorCss, inputBoxCss, register, errors 
                     required: "Form No. is required"
                 })}
                 ></input>
-                {errors.S_id && <p className={errorCss}>{errors.S_id.message}</p>}
+                {errors.admFormNo && <p className={errorCss}>{errors.admFormNo.message}</p>}
             </div>
 
             </div>
@@ -184,7 +184,7 @@ export default function SchoolDetails({ errorCss, inputBoxCss, register, errors 
                         required: "Student Roll is required"
                     })}
                     ></input>
-                    {errors.stdClass && <p className={errorCss}>{errors.stdClass.message}</p>}        
+                    {errors.stdroll && <p className={errorCss}>{errors.stdroll.message}</p>}        
                 </div>
             </div>
         </div>

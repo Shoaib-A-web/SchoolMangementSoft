@@ -36,10 +36,17 @@ return [
     */
 
     'guards' => [
+
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'userType' => [
+            'driver' => 'session',
+            'provider' => 'userType',
+        ],
+
     ],
 
     /*
@@ -59,18 +66,21 @@ return [
     |
     */
 
+
     'providers' => [
+
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
-    ],
+        'userType' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\UserType::class,
+        ],
 
+    ],
+   
     /*
     |--------------------------------------------------------------------------
     | Resetting Passwords
@@ -89,10 +99,16 @@ return [
     | quickly generating a very large amount of password reset tokens.
     |
     */
-
-    'passwords' => [
+'passwords' => [ 
         'users' => [
             'provider' => 'users',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'user_types' => [
+            'provider' => 'user_types',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,

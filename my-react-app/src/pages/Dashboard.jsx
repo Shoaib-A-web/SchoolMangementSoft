@@ -1,4 +1,4 @@
-
+// icon imports 
 import { PiGraduationCapLight } from "react-icons/pi";
 import { IoPeopleSharp } from "react-icons/io5";
 import { GiBookCover } from "react-icons/gi";
@@ -14,8 +14,15 @@ import { GrAnnounce } from "react-icons/gr";
 import Calendar from "../components/Calendar";
 import { useNavigate } from "react-router-dom";
 
+// import context
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+
+
 export default function Dashboard() {
+  const { totel } = useContext(AuthContext);
   const navigate= useNavigate();
+
   return(<>
     <div className="bg-white rounded-lg shadow-xl py-4">
       <ul className="flex flex-col md:flex-row md:items-start items-center justify-around divide-y-2 md:divide-y-0 md:divide-x-2 px-4">
@@ -24,8 +31,10 @@ export default function Dashboard() {
             <span className=" text-blue-400 text-7xl">
               <PiGraduationCapLight/>
             </span>
-            <div className="flex flex-col justify-between text-center text-gray-600 px-2">
-              <span className="text-2xl">12</span>
+            <div 
+             onClick={()=> navigate('student/studentList')}
+            className="flex flex-col justify-between text-center text-gray-600 px-2">
+              <span className="text-2xl">{totel.studentList.length}</span>
               <span>Totel Students</span>
             </div>
           </div>
@@ -72,7 +81,7 @@ export default function Dashboard() {
         <div className="flex flex-col mt-4 md:mt-0 lg:w-1/3 gap-4">
           <div className="flex gap-4 w-full">
             <button 
-            onClick={()=>navigate("/addstudent")}
+            onClick={()=>navigate("student/addstudent")}
             className="bg-white grow rounded-xl flex flex-col items-center justify-center max-h-32 gap-2 py-2 hover:bg-blue-50 active:shadow-2xl"
             >
               <span className="text-4xl text-blue-400"><MdOutlineAddBox/></span>

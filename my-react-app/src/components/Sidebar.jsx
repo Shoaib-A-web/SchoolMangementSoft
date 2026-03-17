@@ -1,12 +1,14 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 
 // react icons 
 import { RxDashboard } from "react-icons/rx";
+import { PiUsersThree } from "react-icons/pi";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdOutlineAddBox } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
 import { TbReportSearch } from "react-icons/tb";
+import { PiStudent } from "react-icons/pi";
 import { CiLogin } from "react-icons/ci";
 import { SchoolContext } from "../context/SchoolContext";
 import { ImGift } from "react-icons/im";
@@ -15,18 +17,32 @@ import Imgdemo from "../assets/dummy/dummy-user.png"
 
 
 
-
-
 function Sidebar({ isOpen }) {
   // contex
   const {schoolLogo}= useContext(SchoolContext);
+  // location variable
+  const location = useLocation();
+
 
   // for link button navigater
   const navigate = useNavigate();
+
   //  state to open/close settings dropdown
   const [openSettings, setOpenSettings] = useState(false);
+  const isSettingActive= location.pathname.startsWith('/settings/')
+
+  //state to opne/close user dropdown
+  const [openUser, setOpenUser] =useState(false);
+  const isUserActive= location.pathname.startsWith('/user/')
+
+
   //  state to open/close settings master
   const [openMaster, setOpenMaster] = useState(false)
+  const isMasterActive= location.pathname.startsWith('/master/')
+
+  // state to open/close student master
+  const [openStudent, setOpenStudent] = useState(false)
+  const isStudentActive= location.pathname.startsWith('/student/')
 
   //side bar hover state
   const [isHover, setIsHover]= useState(false)
@@ -74,16 +90,75 @@ function Sidebar({ isOpen }) {
 
 
           <NavLink to="/" end className={navClass}>
-          <RxDashboard />
-          {(isOpen || isHover) && (<div className="flex flex-1  items-center justify-between">
-            <span>Dashboard</span>
-            <IoIosArrowDown />
-          </div>)}
+            <RxDashboard />
+            {(isOpen || isHover) && (<div className="flex flex-1  items-center justify-between">
+              <span>Dashboard</span>
+              <IoIosArrowDown />
+            </div>)}
           </NavLink>
+          
+          {/* USER WITH DROPDOWN */}
+          <div>
+            {/* Button to toggle dropdown */}
+            <button
+              onClick={() => setOpenUser(!openUser)}
+              className={`w-full text-left px-1 py-2 rounded-lg flex items-center justify-between gap-4
+              ${isUserActive ? "bg-gray-800 text-red-400 rounded-none border border-white" : "hover:bg-gray-400"}`}
+              >
+              <PiUsersThree />
+              {(isOpen || isHover) && (
+                <div className="flex flex-1 items-center justify-between">
+                  Users
+                  <IoIosArrowDown />
+                </div>
+              )}
+            </button>
+            {/* DROPDOWN OPTION for users */}
+            {(openUser && (isOpen || isHover)) && (
+              <div className="ml-4 mt-2 flex flex-col gap-2 text-sm">
+
+                {/*These link to dummy setting pages */}
+                <NavLink to="/user/userList" className={navClass}>
+                  User List
+                </NavLink>
+
+
+              </div>
+            )}
+          </div>
+
+          {/* Button for handle student */}
+          <button
+            onClick={() => setOpenStudent(!openStudent)}
+            className={`w-full text-left px-1 py-2 rounded-lg flex items-center justify-between gap-4
+            ${isStudentActive ? "bg-gray-800 text-red-400 rounded-none border border-white" : "hover:bg-gray-400"}`}
+          >
+            <PiStudent/>
+            {(isOpen || isHover) && (
+              <div className="flex flex-1 items-center justify-between">
+                <span>Studnet</span>
+                <IoIosArrowDown />
+              </div>
+            )}
+          </button>
+          {/* option for  sutdent */}
+          {(openStudent && (isOpen || isHover)) && (
+              <div className="ml-4 mt-2 flex flex-col gap-2 text-sm">
+                {/* 👇 These link from student pages */}
+                <NavLink to="/student/studentList" className={navClass}>
+                  Student List
+                </NavLink>
+
+                <NavLink to="/student/addstudent" className={navClass}>
+                  Add Student
+                </NavLink>
+              </div>
+            )}
           {/* Button to toggle dropdown for master */}
           <button
             onClick={() => setOpenMaster(!openMaster)}
-            className="w-full text-left px-1 py-2 rounded-lg hover:bg-gray-400 flex items-center justify-between gap-4"
+            className={`w-full text-left px-1 py-2 rounded-lg flex items-center justify-between gap-4
+            ${isMasterActive ? "bg-gray-800 text-red-400 rounded-none border border-white" : "hover:bg-gray-400"}`}
           >
             <MdOutlineAddBox />
             {(isOpen || isHover) && (
@@ -120,23 +195,16 @@ function Sidebar({ isOpen }) {
                 <NavLink to="/master/state" className={navClass}>
                   State
                 </NavLink>
-
-                <NavLink to="/student" className={navClass}>
-                  Student List
-                </NavLink>
-
-                <NavLink to="/addstudent" className={navClass}>
-                  Add Student
-                </NavLink>
               </div>
             )}
 
           {/* SETTINGS WITH DROPDOWN */}
           <div>
-            {/* Button to toggle dropdown */}
+          {/* Button to toggle dropdown */}
           <button
             onClick={() => setOpenSettings(!openSettings)}
-            className="w-full text-left px-1 py-2 rounded-lg hover:bg-gray-400 flex items-center justify-between gap-4"
+            className={`w-full text-left px-1 py-2 rounded-lg flex items-center justify-between gap-4
+            ${isSettingActive ? "bg-gray-800 text-red-400 rounded-none border border-white" : "hover:bg-gray-400"}`}
             >
             <IoSettingsSharp />
             {(isOpen || isHover) && (
@@ -186,7 +254,6 @@ function Sidebar({ isOpen }) {
                 </div>
               )}
             </NavLink>
-
             
         </nav>
       </div>

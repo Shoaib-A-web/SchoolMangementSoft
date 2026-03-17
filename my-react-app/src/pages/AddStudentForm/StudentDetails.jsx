@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Select from 'react-select';
-import { Controller, Watch } from "react-hook-form";
+import { Controller} from "react-hook-form";
 import Img from "../../assets/dummy/dummy-user.png"
 
 function StudentDetailes({ control, errorCss, inputBoxCss, register, errors, setValue }) {
@@ -60,11 +60,11 @@ function StudentDetailes({ control, errorCss, inputBoxCss, register, errors, set
     }
 
     const colourOptions = [
-    { value: "red", label: "Red" },
-    { value: "green", label: "Green" },
-    { value: "blue", label: "Blue" },
-    { value: "yellow", label: "Yellow" },
-    { value: "purple", label: "Purple" },
+    { value: "hindi", label: "Hindi" },
+    { value: "english", label: "English" },
+    { value: "bangali", label: "Bangali" },
+    { value: "odiya", label: "Odiya" },
+    { value: "gujarati", label: "Gujarati" },
     ];
     
     return(
@@ -74,13 +74,13 @@ function StudentDetailes({ control, errorCss, inputBoxCss, register, errors, set
                                     {/* kskdjdkdnskdns */}
                                     <div className="mb-4">
                                         <label className="font-semibold text-gray-700 block mb-2">
-                                            Select Colors
+                                            Mother Tongue
                                         </label>
 
                                         <Controller
-                                            name="colors"
+                                            name="mTongue"
                                             control={control}
-                                            rules={{ required: "Please select at least one color" }}
+                                            rules={{ required: "Please select at least one mother tongue" }}
                                             render={({ field }) => (
                                             <Select
                                                 {...field}
@@ -172,7 +172,7 @@ function StudentDetailes({ control, errorCss, inputBoxCss, register, errors, set
                                     </div>
                                 </div>                                
                                 
-                                <div className={preinput}>
+                                {/* <div className={preinput}>
                                     <label className={labelforinp} htmlFor="mothertongue">Mother Tongue</label>
                                     <select className={inputcss} 
                                     {...register('mothertongue',{
@@ -185,7 +185,7 @@ function StudentDetailes({ control, errorCss, inputBoxCss, register, errors, set
                                     </select>
                                     {errors.mothertongue && <p className={errorCss}>{errors.mothertongue.message}</p>}
 
-                                </div>                                
+                                </div>                                 */}
                                 <div className={preinput}>
                                     <label className={labelforinp} htmlFor="stdReligion">Religion</label>
                                     <div className={inputBoxCss}>
@@ -370,7 +370,7 @@ function StudentDetailes({ control, errorCss, inputBoxCss, register, errors, set
                                         Upload student image
                                     <label className="size-40 md:size-60 p-2 border-2 border-gray-200 hover:border-gray-400 hover:shadow-xl rounded-lg" htmlFor="fileimg">
                                         <img className="size-full" src={previewUrl} alt="student image" /></label>
-                                    <input
+                                    {/* <input
                                     id="fileimg"
                                     className="grow mb-4 visible"
                                     type="file"
@@ -378,7 +378,34 @@ function StudentDetailes({ control, errorCss, inputBoxCss, register, errors, set
                                     hidden
                                     {...register('stdImage')}
                                     onChange={handleFileChange}
-                                    ></input>
+                                    ></input> */}
+
+                                    <Controller
+                                        name="stdImage"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <input
+                                            type="file"
+                                            accept="image/*"
+                                            hidden
+                                            id="fileimg"
+                                            onChange={(e) => {
+                                                const file = e.target.files[0];
+                                                if (!file) return;
+
+                                                const preview = URL.createObjectURL(file);
+
+                                                setPreviewUrl(preview);
+
+                                                field.onChange({
+                                                    file: file,
+                                                    preview: preview
+                                                });
+                                            }}
+                                            />
+                                        )}
+                                    />
+
                                 </div>
                             </div>
                             

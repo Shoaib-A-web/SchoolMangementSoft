@@ -14,43 +14,14 @@ function GuardianDetails({errorCss, register, errors, getValues, setValue, watch
             setValue(permanentField, "");
         }
     };
-    const [inputs, setInputs]= useState({
-        //father detailes
-        fname:"",
-        fqualificatin:"",
-        foccupation:"",
-        fmobile:"",
-        fwhatsapp:"",
-        fincome:"",
-        fmail:"",
-        fpresentadd:"",
-        fpermanentadd:"",
-        //mother details
-        mname:"",
-        mqualificatin:"",
-        moccupation:"",
-        mmobile:"",
-        mwhatsapp:"",
-        mincome:"",
-        mmail:"",
-        mpresentadd:"",
-        mpermanentadd:""
-    })
-
-
-    const handleChange= (e) => {    
-        const name= e.target.name;
-        const value= e.target.value;
-        setInputs(values=>({...values,[name]:value} ))
-    } 
-
+    
     const preinput= "flex justify-between"
     const preinput2="flex flex-col"
     const labelforinp= "font-semibold text-gray-700"
     const inputcss=" w-full border border-gray-300 hover:border-gray-500 hover:shadow-xl rounded-sm p-2"
 
     return(
-        <div className="flex flex-col xl:flex-row justify-between gap-4">
+        <div className="flex flex-col lg:flex-row justify-between gap-4">
             
             {/* first column of Guardian details */}
                 <div className="text-sm lg:text-xl border-2 border-gray-300 rounded-lg p-2 lg:w-1/2">

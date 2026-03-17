@@ -16,8 +16,6 @@ import AddClass from "./pages/Master/Class";
 import AddSchool from "./pages/Master/AddSchool"
 import Blood from "./pages/Master/blood"
 import State from "./pages/Master/state"
-import AddStudent from "./pages/AddStudent"
-import Student from "./pages/Student"
 import Dashboard from "./pages/Dashboard";
 import MainLayOut from "./layouts/Mainlayout";
 import Report from "./pages/Report";
@@ -26,13 +24,24 @@ import General from "./pages/Settings/General";
 import Security from "./pages/Settings/Security";
 import Notifications from "./pages/Settings/Notifications";
 import Category from "./pages/Master/Category";
+import UserProfile from "./pages/UserProfile";
+
+//components of student is imoported
+import UserList from "./components/UserList";
+import AddStudent from "./pages/AddStudent"
+import Student from "./pages/Student"
+import SchoolDetails from "./pages/AddStudentForm/SchoolDetails";
+
 // import { useState } from 'react'                downloaded content while it is installed
 import Login from './components/login'
+import Register from "./components/Register";
 import Home from './components/Home'
 import TopBar from "./components/TopBar";
 
 // text page
 import OuterTest from "./components/OuterTest"
+import StudentDetails from "./components/students/StudentDetails";
+import UserDetails from "./components/UserDetails";
 // import reactLogo from './assets/react.svg'  downloaded content while it is installed
 // import viteLogo from '/vite.svg'            downloaded content while it is installed
 // import './App.css'                          downloaded content while it is installed
@@ -40,31 +49,7 @@ import OuterTest from "./components/OuterTest"
 function App() {
   const [sideOpen, setSideOpen] = useState(false)              // downloaded content while it is installed
   const setsideToggle= () => setSideOpen(!sideOpen)
-  // return (                                                downloaded content while it is installed
-  //   <>
-  //     <div>
-  //       <a href="https://vite.dev" target="_blank">
-  //         <img src={viteLogo} className="logo" alt="Vite logo" />
-  //       </a>
-  //       <a href="https://react.dev" target="_blank">
-  //         <img src={reactLogo} className="logo react" alt="React logo" />
-  //       </a>
-  //     </div>
-  //     <h1>Vite + React</h1>
-  //     <div className="card">
-  //       <button onClick={() => setCount((count) => count + 1)}>
-  //         count is {count}
-  //       </button>
-  //       <p>
-  //         Edit <code>src/App.jsx</code> and save to test HMR
-  //       </p>
-  //     </div>
-  //     <p className="read-the-docs">
-  //       Click on the Vite and React logos to learn more
-  //     </p>
-  //   </>
-  // )
-
+ 
 
   return(
     <>
@@ -89,12 +74,17 @@ function App() {
                       <RequireAuth>
                           <MainLayOut />
                       </RequireAuth>
-                      }>
+                      }
+                    >
                       <Route index element={ <Dashboard />} />
-                      <Route path="student" element={<Student />} />
-                      <Route path="addstudent" element={<AddStudent />} />
                       <Route path="report" element={<Report />} />
                       <Route path="testting" element={<TestThing />} />
+
+                      {/* STUDENTS ROUTES */}
+                      <Route path="student/studentList" element={<Student />} />
+                      <Route path="student/addstudent" element={<AddStudent />} />
+                      <Route path="studentdetails/:studentId" element={<StudentDetails />} />
+
                     
                       {/* MASTER ROUTES */}
                       <Route path="master/section" element={<ClassSection />} />
@@ -108,9 +98,17 @@ function App() {
                       <Route path="settings/general" element={<General />} />
                       <Route path="settings/security" element={<Security />} />
                       <Route path="settings/notifications" element={<Notifications />} />
+
+                      {/* other pages route */}
+                      <Route path="userProfile" element={<UserProfile/>} />
+                      <Route path="/user/userList" element={<UserList/>} />
+                      <Route path="user/userDetails/:user_id" element={<UserDetails/>} />
+                      
                     </Route>
                   <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
                   <Route path="/outtest" element={<OuterTest/>} />
+                  {/* <Route path="/test" element={<h1>TEST PAGE</h1>} /> */}
                 </Routes>
               {/* </main> */}
         {/* </div> */}
