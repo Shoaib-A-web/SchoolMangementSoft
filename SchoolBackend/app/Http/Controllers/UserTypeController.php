@@ -1,5 +1,6 @@
 <?php
-
+// this controller is used for curd opration for the user type table 
+ 
 namespace App\Http\Controllers;
 
 use App\Models\UserType;
@@ -153,11 +154,15 @@ class UserTypeController extends Controller
         // 5. Handle image upload
         if ($request->hasFile('image')) {
 
-            $imageName = time() . '.' . $request->image->extension();
+            //  delete old image
+            if ($user->image && file_exists(public_path('storage/'.$user->image))) {
+                unlink(public_path('storage/'.$user->image));
+            }
 
-            $request->image->move(public_path('uploads'), $imageName);
+            //  store new image in storage
+            $path = $request->file('image')->store('users', 'public');
 
-            $data['image'] = $imageName;
+            $data['image'] = $path;
         }
 
         // 6. Update only provided fields

@@ -1,15 +1,14 @@
 // impot image
 import { useNavigate, useParams } from 'react-router-dom';
 import Dummyuser from '../../src/assets/dummy/dummy-user.png'
-import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
+
+import { getUsers } from '@/api';
 
 const UserDetails=()=> {
     const navigate= useNavigate();
     const {user_id} = useParams();
     const [profielBorder, setProfielBorder]= useState('');
-    const {user}= useContext(AuthContext);
     const [userDetails, setUserDetails] = useState(null);
 
     
@@ -17,9 +16,7 @@ const UserDetails=()=> {
         const dataCall= async ()=>{
         
             try{
-                const res= await axios.get(
-                    `http://127.0.0.1:8000/api/users/${user_id}`
-                )
+                const res= await getUsers(user_id);  //cal for user by id 
                 setUserDetails(res.data);
             }catch (errors){
                 console.log(errors)

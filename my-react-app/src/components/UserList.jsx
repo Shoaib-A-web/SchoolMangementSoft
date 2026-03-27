@@ -1,4 +1,5 @@
-import axios from "axios";
+import { getUsersList } from "@/api";
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -23,18 +24,8 @@ function UserList(){
     const UserList= async()=>{
         try {
 
-            const token = localStorage.getItem("token"); // sanctum token
-
-            const res = await axios.get(
-                `http://127.0.0.1:8000/api/user-types`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }
-            );
-        setUsers(res.data.data);
+            const res = await getUsersList();
+            setUsers(res.data.data);
 
         } catch (error) {
 

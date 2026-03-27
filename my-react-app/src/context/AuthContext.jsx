@@ -1,7 +1,8 @@
-import axios from "axios";
+
 import {createContext, useState } from "react";
 import { toast } from "react-toastify";
 import Img from "../assets/dummy/dummy-user.png"
+import { logoutUser } from "@/api";
 
 
 export const AuthContext = createContext(null);
@@ -19,24 +20,17 @@ export const AuthProvider =({children}) => {
     const loginGuest = () => {
         setUser({ guest: true })
     }
+
     // saviing data on local storage after login 
     const login = (userData) => {
         localStorage.setItem("userInfo", JSON.stringify(userData));
         setUser(userData);
     }
 
-    // logout for every one 
+    // logout for every one     
     const logout =async () => {
         try{
-            const res= await axios.post("http://127.0.0.1:8000/api/logout",
-                {},
-                {
-                    headers:{
-                        Authorization:`Bearer ${user.token}`,
-                        Accept: "application/json"
-                    },
-                }
-            );
+            const res= await logoutUser();  // axios call for logout
             if (res.data.status === false){
                 toast.error(res.data.message); 
             }else {
@@ -48,6 +42,7 @@ export const AuthProvider =({children}) => {
         }
 
         localStorage.removeItem("userInfo");
+        localStorage.removeItem("token");
         setUser(null);
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+// login with respect of user table and deleting token and logout 
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -64,6 +66,7 @@ class AuthenticationController extends Controller
                     'message' => 'Unauthenticated'
                 ], 401);
         }
+
         $request->user()->currentAccessToken()->delete();
         
         return response()->json([

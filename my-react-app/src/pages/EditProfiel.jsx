@@ -1,7 +1,22 @@
 // impot image
+import { useState } from 'react';
 import Dummyuser from '../../src/assets/dummy/dummy-user.png'
 
-function Form({register, handleSubmit, onSubmit, errors, isSubmitting, user, profielBorder}) {
+function Form({register, handleSubmit, onSubmit, errors, isSubmitting, user, setFile, profielBorder}) {
+
+    const [preview, setPreview] = useState(Dummyuser);
+
+    const handleImage = (e) => {
+        const selectedFile= e.target.files[0];
+        setFile(selectedFile);
+
+        if (selectedFile){
+            setPreview(URL.createObjectURL(selectedFile));
+        }
+    };
+
+
+
     return(
                 <form 
                 onSubmit={handleSubmit(onSubmit)}
@@ -9,10 +24,15 @@ function Form({register, handleSubmit, onSubmit, errors, isSubmitting, user, pro
                 {/* Profile Image */}
                 <div className="flex flex-col items-center mb-4">
                     <img
-                        src={Dummyuser}
+                        src={preview || Dummyuser}
                         alt="profile"
                         className="w-28 h-28 rounded-full border-4 border-gray-300 object-cover"
                     />
+                    <input type="file"
+                     id=""
+                     onChange={handleImage}
+                      />
+
                     <h2 className="text-xl font-bold mt-3">
                         <input
                         className="border m-2  p-2 rounded hover:shadow-lg"

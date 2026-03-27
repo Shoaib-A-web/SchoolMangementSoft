@@ -1,7 +1,8 @@
-import axios from "axios";
+
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { createUser } from "@/api";
 
 function Register() {
     const navigate = useNavigate();
@@ -18,19 +19,7 @@ function Register() {
     const onSubmit = async (data) => {
 
         try {
-
-            const res = await axios.post(
-                "http://127.0.0.1:8000/api/user-types",
-                data,
-                {
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                }
-            );
-
-            console.log(res.data);
-
+            const res= await createUser(data);
             if (res.data.status === false) {
                 toast.error(res.data.message);
             } else {
@@ -39,22 +28,16 @@ function Register() {
             }
 
         } catch (error) {
-            const errors= error.response.data.errors;
-
-            Object.key(errors).forEach(field => {
-            toast.errore(errors[field][0]);
-                
-            });
-            if (error.response) {
-                console.log(error.response)
-                toast.error(error.response.data.errors.email[0]);
+            const apiErrors= error.response?.data?.errors;
+            if (apiErrors){
+                    Object.keys(apiErrors).forEach(field => {
+                    toast.error(apiErrors[field][0]);
+                });
             } else {
                 toast.error("Registration failed");
             }
 
         }
-
-
     }
 
     return (

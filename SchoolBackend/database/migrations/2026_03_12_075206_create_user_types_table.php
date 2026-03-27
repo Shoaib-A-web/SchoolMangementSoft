@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('contact');
             $table->string('aadhar');
             $table->date('age');
-            $table->string('image')->nullable();
+            $table->string('image')->nullable();  //IMAGE PATH
             $table->string('password');
             $table->timestamps();
         });

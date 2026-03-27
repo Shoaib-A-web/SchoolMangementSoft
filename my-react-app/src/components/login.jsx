@@ -1,6 +1,6 @@
-import axios from "axios";
+
 import { toast } from "react-toastify";
-import {  useContext, useState } from "react"
+import {  useContext } from "react"
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -8,6 +8,7 @@ import { useNavigate, Link } from "react-router-dom";
 // import Basestyle from '../style/Basestyle.css'
 import Dummyuser from '../assets/dummy/dummy-user.png'
 import { AuthContext } from "../context/AuthContext";
+import { loginUser } from "@/api";
 
     function Login() {
         const navigate= useNavigate();
@@ -15,7 +16,6 @@ import { AuthContext } from "../context/AuthContext";
         const{
             register,
             handleSubmit,
-            watch,
             formState:{ errors, isSubmitting },
         }=useForm();
 
@@ -24,24 +24,15 @@ import { AuthContext } from "../context/AuthContext";
         const onSubmit=async (data)=>{
 
             try{
-                const res=await axios.post(
-                    // "http://127.0.0.1:8000/api/authenticate",
-                    "http://127.0.0.1:8000/api/userType/login",
-                    data,
-                    {
-                    headers:{
-                    'content-type': 'application/json'
-                    }
-                }); 
-
+                const res= await loginUser(data);
                 if (res.data.status === false) {
                     toast.error(res.data.message);
                 } else {
                     const userInfo= {
                         id: res.data.user.user_id,
-                        token: res.data.token,
                         userData: res.data.user
                     }
+                    localStorage.setItem("token", res.data.token);
                     login(userInfo);
                     navigate('/');
 

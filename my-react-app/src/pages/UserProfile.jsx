@@ -8,13 +8,19 @@ import Form from "./EditProfiel";
 
 // impot image
 import Dummyuser from '../../src/assets/dummy/dummy-user.png'
-import axios from "axios";
+
+import { updateUser } from "@/api";
 
 
 function UserProfile() {
     const {user , setUser }= useContext(AuthContext);
     const [profielBorder, setProfielBorder]= useState('');
     const [isEdit, setIsEdit]=useState(false);
+    const [file, setFile] = useState(null);
+
+    const imageUrl = user?.image
+    ? `http://127.0.0.1:8000/storage/${user.image}`
+    : Dummyuser;
     
     const {
         register,
@@ -30,20 +36,33 @@ function UserProfile() {
 
         try {
 
-            const token = localStorage.getItem("token"); // sanctum token
             const userId = user?.userData?.user_id;
 
-            const res = await axios.patch(
-                `http://127.0.0.1:8000/api/users/${userId}`,
-                data,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
+            // Create FormData
+            const formData = new FormData();
+
+            // append all fileds
+            Object.keys(data).forEach((key)=>  {
+                if (data[key] !== undefined && data[key] !== null) {
+                    formData.append(key, data[key]);
                 }
-            );
-        
+            });
+
+            // append image 
+            console.log('image file',file);
+            if (file){
+                formData.append('image', file);
+            }
+             console.log("data pre axios:", formData);
+
+            for (let pair of formData.entries()) {
+                console.log(pair[0], pair[1]);
+            }
+
+            const res= await updateUser(userId, formData);
+
+            console.log("drespoce past axios:", res);
+            
             // update localStorage
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             userInfo.userData = res.data.data;
@@ -66,7 +85,7 @@ function UserProfile() {
 
             console.log("ERROR:", error);
 
-            console.log(error.response?.data);
+            console.log("Error form responce",error.response?.data);
 
             alert("Update failed");
 
@@ -116,7 +135,7 @@ function UserProfile() {
                 {/* Profile Image */}
                 <div className="flex flex-col items-center mb-4">
                     <img
-                        src={Dummyuser}
+                        src={imageUrl}
                         alt="profile"
                         className="w-28 h-28 rounded-full border-4 border-gray-300 object-cover"
                     />
@@ -168,9 +187,7 @@ function UserProfile() {
         );
     }
     
-    const imageUrl = user?.image
-        ? `http://127.0.0.1:8000/uploads/${user.image}`
-        : "https://via.placeholder.com/120";
+
 
 
     return (<div>
@@ -183,6 +200,7 @@ function UserProfile() {
                 isSubmitting={isSubmitting}
                 user={user}
                 profielBorder={profielBorder}
+                setFile={setFile} 
             />
 
         )}

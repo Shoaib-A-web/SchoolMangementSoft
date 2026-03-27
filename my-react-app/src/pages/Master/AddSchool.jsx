@@ -13,14 +13,13 @@ function AddSchool(){
         schoolContact: "",
         schoolAdd: "",
         schoolLogo: null
-        });
-
+    });
 
     const handleChange = (e) => {
         const name= e.target.name;
         const value= e.target.value
         setSchool({...school, [name]:value});
-        };
+    };
     
 
         const handleSubmit = async (e) => {

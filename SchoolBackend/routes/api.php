@@ -12,15 +12,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserTypeController;
 use GuzzleHttp\Middleware;
 
-Route::post('authenticate',[AuthenticationController::class,'authenticate']); // api main user or supper user table  for loging
+Route::post('authenticate',[AuthenticationController::class,'authenticate']); // api main user or supper user table  for loging.
 
-Route::post('/userType/login',[UserTypeController::class,'login']);  // api for sub user or child user with userType table
-Route::patch('/users/{id}', [UserTypeController::class, 'update']);  // api for update user-type table
-Route::get('/users/{id}', [UserTypeController::class, 'show']);  // api for getting data of spacific id user-type table
+Route::apiResource('user-types',UserTypeController::class);    // route for user_types table. for curd with User type table.
 
 Route::middleware('auth:sanctum')->post('logout', [AuthenticationController::class, 'logout']); //api for logout
+Route::post('/userType/login',[UserTypeController::class,'login']);  // api for sub user or child user with user_Type table for login.
+Route::middleware('auth:sanctum')->get('/users/{id}', [UserTypeController::class, 'show']);  // api for getting user data of spacific id user_type table.
+Route::middleware('auth:sanctum')->patch('/users/{id}', [UserTypeController::class, 'update']);  // api for update user info  user_type table.
 
-Route::apiResource('user-types',UserTypeController::class);    // route for user_types table.
+
+
+
+
+
 Route::middleware('auth:senctum')->group(function (){
     
     Route::post('tempStudent',[TempStudentsController::class, 'store']);   // api for insertin data 
