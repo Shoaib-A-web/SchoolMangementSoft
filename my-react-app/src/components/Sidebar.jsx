@@ -136,7 +136,7 @@ function Sidebar({ isOpen }) {
             <PiStudent/>
             {(isOpen || isHover) && (
               <div className="flex flex-1 items-center justify-between">
-                <span>Studnet</span>
+                <span>Student</span>
                 <IoIosArrowDown />
               </div>
             )}
@@ -174,6 +174,10 @@ function Sidebar({ isOpen }) {
                 {/* 👇 These link from master pages */}
                 <NavLink to="/master/addSchool" className={navClass}>
                   Add School
+                </NavLink>
+
+                <NavLink to="master/schoolList" className={navClass}>
+                  School List
                 </NavLink>
 
                 <NavLink to="/master/class" className={navClass}>

@@ -14,14 +14,33 @@ import { GrAnnounce } from "react-icons/gr";
 import Calendar from "../components/Calendar";
 import { useNavigate } from "react-router-dom";
 
+// axiose
+import { countUser } from "@/api";
+
 // import context
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 
 export default function Dashboard() {
-  const { totel } = useContext(AuthContext);
+  const { totel, setTotel } = useContext(AuthContext);
   const navigate= useNavigate();
+
+  useEffect(()=>{
+    const count= async ()=>{
+      try{
+        const res= await countUser();
+
+        setTotel((prev) => ({
+          ...prev,
+          user: res?.data?.data || "NA"
+        }));
+      }catch(errors){
+        alert(`${errors}, problem for fetching counnt user.`);
+      }
+    }
+    count();
+  },[])
 
   return(<>
     <div className="bg-white rounded-lg shadow-xl py-4">
@@ -45,7 +64,7 @@ export default function Dashboard() {
               <IoPeopleSharp/>
             </span>
             <div className="flex flex-col justify-between text-center text-gray-600 px-2">
-              <span className="text-2xl">7</span>
+              <span className="text-2xl">{totel.user}</span>
               <span>Totel Employees</span>
             </div>
           </div>
@@ -89,7 +108,9 @@ export default function Dashboard() {
                 Add Studenet
               </span>
             </button>
-            <button className="bg-white grow rounded-xl flex flex-col items-center justify-center max-h-32 gap-2 py-2 hover:bg-blue-50 active:shadow-2xl">
+            <button 
+            onClick={()=>navigate("/addEmployee")}
+            className="bg-white grow rounded-xl flex flex-col items-center justify-center max-h-32 gap-2 py-2 hover:bg-blue-50 active:shadow-2xl">
               <span className="text-4xl text-blue-400">
                 <BsPersonFillAdd/>
               </span>

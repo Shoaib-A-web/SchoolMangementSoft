@@ -25,12 +25,14 @@ import Security from "./pages/Settings/Security";
 import Notifications from "./pages/Settings/Notifications";
 import Category from "./pages/Master/Category";
 import UserProfile from "./pages/UserProfile";
+import SchoolData from "./pages/Master/SchoolData";
 
 //components of student is imoported
 import UserList from "./components/UserList";
 import AddStudent from "./pages/AddStudent"
 import Student from "./pages/Student"
 import SchoolDetails from "./pages/AddStudentForm/SchoolDetails";
+import AddEmployee from "./components/addEmployee";
 
 // import { useState } from 'react'                downloaded content while it is installed
 import Login from './components/login'
@@ -42,6 +44,7 @@ import TopBar from "./components/TopBar";
 import OuterTest from "./components/OuterTest"
 import StudentDetails from "./components/students/StudentDetails";
 import UserDetails from "./components/UserDetails";
+import SchoolList from "./pages/SchoolList";
 // import reactLogo from './assets/react.svg'  downloaded content while it is installed
 // import viteLogo from '/vite.svg'            downloaded content while it is installed
 // import './App.css'                          downloaded content while it is installed
@@ -79,6 +82,8 @@ function App() {
                       <Route index element={ <Dashboard />} />
                       <Route path="report" element={<Report />} />
                       <Route path="testting" element={<TestThing />} />
+                      <Route path="addEmployee" element={<AddEmployee />} />
+
 
                       {/* STUDENTS ROUTES */}
                       <Route path="student/studentList" element={<Student />} />
@@ -90,9 +95,11 @@ function App() {
                       <Route path="master/section" element={<ClassSection />} />
                       <Route path="master/class" element={<AddClass />} />
                       <Route path="master/addSchool" element={<AddSchool />} />
+                      <Route path="master/schoolList" element={<SchoolList />} />
                       <Route path="master/blood" element={<Blood />} />
                       <Route path="master/Category" element={<Category />} />
                       <Route path="master/state" element={<State />} />
+                      <Route path="master/schoolDetails/:schoolId" element={<SchoolData />} />
 
                       {/* SETTINGS ROUTES */}
                       <Route path="settings/general" element={<General />} />

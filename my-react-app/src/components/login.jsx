@@ -27,7 +27,9 @@ import { loginUser } from "@/api";
                 const res= await loginUser(data);
                 if (res.data.status === false) {
                     toast.error(res.data.message);
+                    console.log(res.data.message);
                 } else {
+                    
                     const userInfo= {
                         id: res.data.user.user_id,
                         userData: res.data.user
@@ -38,8 +40,8 @@ import { loginUser } from "@/api";
 
                 }
 
-                }catch(error){
-                alert("Error:", error);
+                }catch(errors){
+                alert( `${errors}, see credentioals `);
                 
                 }
             

@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import Form from "./EditProfiel";
 
 // impot image
-import Dummyuser from '../../src/assets/dummy/dummy-user.png'
+import Dummyuser from '../../src/assets/dummy/dummy-user.png';
 
 import { updateUser } from "@/api";
 
@@ -18,8 +18,8 @@ function UserProfile() {
     const [isEdit, setIsEdit]=useState(false);
     const [file, setFile] = useState(null);
 
-    const imageUrl = user?.image
-    ? `http://127.0.0.1:8000/storage/${user.image}`
+    const imageUrl = user?.userData.image
+    ? `http://127.0.0.1:8000/storage/${user?.userData.image}`
     : Dummyuser;
     
     const {
@@ -43,25 +43,19 @@ function UserProfile() {
 
             // append all fileds
             Object.keys(data).forEach((key)=>  {
-                if (data[key] !== undefined && data[key] !== null) {
+                if (data[key] !== undefined && data[key] !== null && data[key] !== "") {
                     formData.append(key, data[key]);
                 }
             });
 
             // append image 
-            console.log('image file',file);
             if (file){
                 formData.append('image', file);
             }
-             console.log("data pre axios:", formData);
-
-            for (let pair of formData.entries()) {
-                console.log(pair[0], pair[1]);
-            }
+            formData.append('_method', 'PATCH');
 
             const res= await updateUser(userId, formData);
 
-            console.log("drespoce past axios:", res);
             
             // update localStorage
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -137,7 +131,7 @@ function UserProfile() {
                     <img
                         src={imageUrl}
                         alt="profile"
-                        className="w-28 h-28 rounded-full border-4 border-gray-300 object-cover"
+                        className={`w-28 h-28 rounded-full border-4 ${profielBorder} object-cover`}
                     />
                     <h2 className="text-xl font-bold mt-3">
                         {user?.userData?.first_name} {user?.userData?.last_name}

@@ -1,10 +1,8 @@
 import axios from "axios";
+import { ENV } from "@/config/env";
 
 const axiosInstance = axios.create({
-  baseURL: "http://127.0.0.1:8000/api",
-  headers:{
-    "Content-Type": "multipart/form-data",
-  }
+  baseURL: ENV.API_BASE_URL || "http://127.0.0.1:8000/api",
 
 });
 
@@ -18,7 +16,11 @@ axiosInstance.interceptors.request.use(
     }
 
     // if (config.data instanceof FormData) {
+    //   // for form type data 
     //   config.headers["Content-Type"]= "multipart/form-data";
+    // } else {
+    //   //  For JSON requests
+    //   config.headers["Content-Type"] = "application/json";
     // }
 
     return config;

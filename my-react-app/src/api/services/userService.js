@@ -1,5 +1,4 @@
-import { API_ENDPOINTS, axiosInstance } from "@/api";
-import { useParams } from "react-router-dom";
+import { API_ENDPOINTS, axiosInstance } from "@/api"; 
 
 
 // export const createUser = (data) => {
@@ -23,7 +22,18 @@ export const getUsersList = () => {
 };
 
 // for  updating user info  by id user_table
-export const updateUser = (id,data) => {
-
-  return axiosInstance.patch(`${API_ENDPOINTS.USERS}/${id}`,data);
+export const updateUser = (id,data) => {  
+  // data.append('_method', 'PATCH'); // spoof method
+  return axiosInstance.post(`${API_ENDPOINTS.USERS}/${id}`,data);
 };
+
+// for feaching number of user in user-table
+export const countUser = () => {
+  return axiosInstance.get(API_ENDPOINTS.USER_COUNT);
+}
+
+// for deleting  user by id user-table
+export const deleteUser = (id) => {
+  return axiosInstance.delete(`${API_ENDPOINTS.USERS}/${id}`);
+}
+

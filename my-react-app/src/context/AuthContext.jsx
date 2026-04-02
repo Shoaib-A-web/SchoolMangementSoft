@@ -261,12 +261,14 @@ export const AuthProvider =({children}) => {
                 }
             ],
         "employees": 0,
+        "user": 0,
         "subjects": 0
     })
 
     return(
         <AuthContext.Provider value={{
             user,
+            Img,
             totel,
             setTotel, 
             login, 

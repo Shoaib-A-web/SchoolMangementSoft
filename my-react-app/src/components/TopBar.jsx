@@ -37,7 +37,7 @@ function TopBar({isOpen, sideToggle}){
 
     useEffect(()=>{
 
-        switch (user?.userData.userType) {
+        switch (user?.userData?.userType) {
         case 'Admin':
             setProfielBorder('border-red-300');
             break;
@@ -120,7 +120,11 @@ function TopBar({isOpen, sideToggle}){
                 <div className={`border-4 rounded-full ${profielBorder}`}>
                     <img
                     className=" size-8 rounded-full  border-2 border-white"
-                    src={Imgdemo} alt="demmy" />
+                    src={
+                        user?.userData?.image
+                            ? `http://127.0.0.1:8000/storage/${user?.userData.image}`
+                            : Imgdemo
+                        } alt="demmy" />
                 </div>
                     <span>
                         {(user)? (user?.userData?.first_name) : demoName}
@@ -169,14 +173,18 @@ function TopBar({isOpen, sideToggle}){
                     <div className={`border-4 rounded-full ${profielBorder}`}>
                         <img
                         className=" size-8 rounded-full"
-                        src={Imgdemo} alt="demmy" />
+                        src={
+                        user?.userData?.image
+                            ? `http://127.0.0.1:8000/storage/${user?.userData.image}`
+                            : Imgdemo
+                        } alt="demmy" />
                     </div>
                     <span>{(user)? (user?.userData?.first_name) : demoName}</span>
                     <div>
                         <IoIosArrowDown />
                     </div>
                     { profile && (
-                        <ProfileMenu/>
+                        <ProfileMenu handelprofiel={handelprofiel}/>
                     )}
                 </button>  
         </div>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\Api\SchoolController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\studentcontroller;
@@ -20,6 +21,10 @@ Route::middleware('auth:sanctum')->post('logout', [AuthenticationController::cla
 Route::post('/userType/login',[UserTypeController::class,'login']);  // api for sub user or child user with user_Type table for login.
 Route::middleware('auth:sanctum')->get('/users/{id}', [UserTypeController::class, 'show']);  // api for getting user data of spacific id user_type table.
 Route::middleware('auth:sanctum')->patch('/users/{id}', [UserTypeController::class, 'update']);  // api for update user info  user_type table.
+Route::middleware('auth:sanctum')->delete('/users/{id}', [UserTypeController::class, 'destroy']);  // api for delete by user user id info  user_type table.
+
+Route::middleware('auth:sanctum')->get('/userCount', [UserTypeController::class, 'totalUsers']);  // api for getting totel count of user from user_type table.
+Route::apiResource('schools', SchoolController::class);    // for manage school table
 
 
 

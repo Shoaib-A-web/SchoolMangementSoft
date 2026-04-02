@@ -3,13 +3,16 @@ import { getUsersList } from "@/api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Dummyuser from '../../src/assets/dummy/dummy-user.png';
+
+
 //table styleing 
-    const tableclass="w-full table-auto divide-y divide-gray-400 rounded-2 text-xs md:text-sm text-center"
-    const theadclass="sticky top-0 w-full"
-    const thclass=" px-4 py-2 font-medium text-center text-white bg-gray-600"
-    const tbodyclass="divide-y divide-gray-300"
-    const trclass="hover:bg-red-100 odd:bg-white even:bg-red-50"
-    const tdclass="px-2 py-1 text-gray-700"
+const tableclass="w-full table-auto divide-y divide-gray-400 rounded-2 text-xs md:text-sm text-center"
+const theadclass="sticky top-0 w-full"
+const thclass=" px-4 py-2 font-medium text-center text-white bg-gray-600"
+const tbodyclass="divide-y divide-gray-300"
+const trclass="hover:bg-red-100 odd:bg-white even:bg-red-50"
+const tdclass="px-2 py-1 text-gray-700"
 
 
 function UserList(){
@@ -21,6 +24,7 @@ function UserList(){
     useEffect(()=>{
         UserList()
     },[])
+
     const UserList= async()=>{
         try {
 
@@ -47,6 +51,7 @@ function UserList(){
                         <thead className={theadclass}>
                             <tr className={trclass}>
                             <th className={thclass}>S.No</th>
+                            <th className={thclass}>Image</th>
                             <th className={thclass}>User Id</th>
                             <th className={thclass}>Name</th>
                             <th className={thclass}>E-mail</th> 
@@ -63,6 +68,17 @@ function UserList(){
                                 users.map((user,index) =>{
                                     return(<tr className={trclass} key={index}>
                                             <td className={tdclass}>{index+1}</td>
+                                            <td className={tdclass}>
+                                                <img
+                                                    src={
+                                                    user.image
+                                                        ? `http://127.0.0.1:8000/storage/${user.image}`
+                                                        : Dummyuser
+                                                    }
+                                                    alt="user"
+                                                    className="w-10 h-10 rounded-full object-cover"
+                                                />
+                                            </td>
                                             <td className={tdclass}>{user.user_id}</td>
                                             <td className={tdclass}>{user.first_name+" "+user.last_name}</td>
                                             <td className={tdclass}>{user.email}</td>

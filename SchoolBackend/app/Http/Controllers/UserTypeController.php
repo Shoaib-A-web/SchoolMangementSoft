@@ -8,9 +8,31 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
+
 
 class UserTypeController extends Controller
 {
+    // conrolle for user counts
+    public function totalUsers(Request $request){
+        Log::info($request->all()); 
+        $count = count(UserType::all());
+
+        if(!$count){
+            return response()->json([
+                'status' => false,
+                'message' => 'User cannot found'
+            ]);
+        }else{
+            return response()->json([
+                'status' => true,
+                'message' => 'User count fetched successfully',
+                'data' => $count
+            ]);
+        }
+        
+    }
     
     /**
      * Display a listing of the resource.
@@ -81,9 +103,10 @@ class UserTypeController extends Controller
      * Display the specified resource.
      */
 
-    public function show($id)
+    public function show($id, Request $request)
     {
         //
+        
         
         try {
             $user = UserType::find($id);
@@ -111,7 +134,7 @@ class UserTypeController extends Controller
     public function update(Request $request, $id)
     {
         //
-      
+
         // 1. Find user
         $user = UserType::find($id);
 
@@ -180,16 +203,50 @@ class UserTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UserType $userType)
+    public function destroy($id)
     {
-        //
+        try {
+            //  Find user
+            $user = UserType::find($id);
+
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User not found'
+                ], 404);
+            }
+
+            //  Delete tokens (Sanctum)
+            if (method_exists($user, 'tokens')) {
+                $user->tokens()->delete();
+            }
+
+            //  Delete image (if exists)
+            if ($user->image && file_exists(public_path('storage/' . $user->image))) {
+                unlink(public_path('storage/' . $user->image));
+            }
+
+            // 🗑️ Delete user
+            $user->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User deleted successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     // logic for login  logout  by user type 
 
     public function login(Request $request)
     {
-
         // Validation
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
@@ -204,34 +261,42 @@ class UserTypeController extends Controller
             ], 422);
         }
 
-        // Credentials
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password,
-            'userType' => $request->userType
-        ];
+        try {
 
-        // Attempt login
-        if (!Auth::guard('userType')->attempt($credentials)) {
+            // Find user with email + userType
+            $user = UserType::where('email', $request->email)
+                            ->where('userType', $request->userType)
+                            ->first();
+
+            // Check user exists + password match
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Invalid credentials'
+                ], 401);
+            }
+
+            // Delete old tokens (optional but recommended)
+            $user->tokens()->delete();
+
+            // Create token
+            $token = $user->createToken('userTypeToken')->plainTextToken;
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Login successful',
+                'token' => $token,
+                'user' => $user
+            ]);
+
+        } catch (\Exception $e) {
 
             return response()->json([
                 'status' => false,
-                'message' => 'Invalid credentials'
-            ], 401);
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        // Authenticated user
-        $user = Auth::guard('userType')->user();
-        
-        // Create token
-        $token = $user->createToken('userTypeToken')->plainTextToken;
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Login successful',
-            'token' => $token,
-            'user' => $user
-        ]);
     }
 
 }

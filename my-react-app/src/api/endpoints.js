@@ -6,4 +6,7 @@ export const API_ENDPOINTS = {
   USER_TYPE_LOGIN: "/userType/login",
   SUPER_USER_LOGIN: "/authenticate",
   USER_LOGOUT: "/logout",
+  USER_COUNT: "/userCount",
+  SCHOOLS: "/schools",
+  
 };

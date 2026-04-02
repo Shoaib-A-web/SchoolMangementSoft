@@ -18,6 +18,7 @@ const UserDetails=()=> {
             try{
                 const res= await getUsers(user_id);  //cal for user by id 
                 setUserDetails(res.data);
+                console.log(res.data);
             }catch (errors){
                 console.log(errors)
             }
@@ -50,7 +51,11 @@ const UserDetails=()=> {
                 {/* Profile Image */}
                 <div className="flex flex-col items-center mb-4">
                     <img
-                        src={Dummyuser}
+                        src={
+                            userDetails?.image
+                                ? `http://127.0.0.1:8000/storage/${userDetails?.image}`
+                                : Dummyuser
+                            }
                         alt="profile"
                         className={`w-28 h-28 rounded-full border-4 ${profielBorder} object-cover`}
                     />

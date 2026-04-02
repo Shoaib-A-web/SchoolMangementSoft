@@ -2,10 +2,13 @@
 import { useState } from 'react';
 import Dummyuser from '../../src/assets/dummy/dummy-user.png'
 
+// axios 
+import { deleteUser } from '@/api';
+
 function Form({register, handleSubmit, onSubmit, errors, isSubmitting, user, setFile, profielBorder}) {
 
-    const [preview, setPreview] = useState(Dummyuser);
-
+    const [preview, setPreview] = useState(user?.userData.image? `http://127.0.0.1:8000/storage/${user?.userData.image}` : Dummyuser);
+console.log(user.id)
     const handleImage = (e) => {
         const selectedFile= e.target.files[0];
         setFile(selectedFile);
@@ -14,22 +17,32 @@ function Form({register, handleSubmit, onSubmit, errors, isSubmitting, user, set
             setPreview(URL.createObjectURL(selectedFile));
         }
     };
+    const handleDelete= async () => {
+        try{
+            const res= await deleteUser(user.id);
+            console.log(res.data)
+        }catch(errors){
+            alert(errors);
+        }
+        
+    }
 
-
-
-    return(
+    return(<>
                 <form 
                 onSubmit={handleSubmit(onSubmit)}
                 className={`flex flex-col md:justify-around md:flex-row max-w-md mx-auto md:max-w-full bg-white shadow-lg rounded-xl p-6 border-b-4 ${profielBorder}`}>
                 {/* Profile Image */}
                 <div className="flex flex-col items-center mb-4">
-                    <img
-                        src={preview || Dummyuser}
-                        alt="profile"
-                        className="w-28 h-28 rounded-full border-4 border-gray-300 object-cover"
-                    />
+                   <label htmlFor="updateProfile">
+                        <img
+                            src={preview}
+                            alt="profile"
+                            className={`w-28 h-28 rounded-full border-4  object-cover ${profielBorder} hover:shadow-xl hover:shadow-gray-600`}
+                        />
+                    </label>
                     <input type="file"
-                     id=""
+                     id="updateProfile"
+                     hidden
                      onChange={handleImage}
                       />
 
@@ -145,7 +158,12 @@ function Form({register, handleSubmit, onSubmit, errors, isSubmitting, user, set
                     > {`${isSubmitting ? "Updating...":"Update Profile"}`}</button>
                 </div>
             </form>
-            );
+             <button
+                type='button'
+                className="px-6 py-2 mt-4 w-full border-2 border-red-500 bg-red-500  rounded text-white hover:bg-red-600" 
+                onClick={handleDelete}
+            >Delete Account</button>
+            </>);
 }
 
 export default Form;

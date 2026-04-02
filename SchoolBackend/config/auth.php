@@ -41,11 +41,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-
-        'userType' => [
-            'driver' => 'session',
-            'provider' => 'userType',
+        
+        'api' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
         ],
+
+        // 'userType' => [
+        //     'driver' => 'session',
+        //     'provider' => 'userType',
+        // ],
 
     ],
 
@@ -71,7 +76,7 @@ return [
 
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\UserType::class,
         ],
 
         'userType' => [
