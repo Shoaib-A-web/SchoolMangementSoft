@@ -11,14 +11,12 @@ import { useNavigate } from "react-router-dom";
 
 
 function ProfileMenu({handelprofiel}){
-    const navigate = useNavigate();
-    
+    const navigate = useNavigate();   
     const demoName= "XXXXXX";
     const {user, logout} = useContext(AuthContext);
 
     return(
         <div 
-        // onClick={handelprofiel}
         className="absolute top-full right-0 text-white rounded-xl mt-6 p-4 bg-gray-600 flex flex-col gap-4 z-10">
             <div className="flex flex-col pb-2 border-b-[1px] border-blue-50">
                 <span className="font-semibold text-lg">{(user)? (user?.userData?.first_name)+" "+(user?.userData?.last_name) : demoName}</span>

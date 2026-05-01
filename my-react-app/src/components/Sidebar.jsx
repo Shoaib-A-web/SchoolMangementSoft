@@ -17,7 +17,7 @@ import Imgdemo from "../assets/dummy/dummy-user.png"
 
 
 
-function Sidebar({ isOpen }) {
+function Sidebar({ isOpen, setSideOpen }) {
   // contex
   const {schoolLogo}= useContext(SchoolContext);
   // location variable
@@ -54,11 +54,11 @@ function Sidebar({ isOpen }) {
      ${isActive ? "font-semibold border border-white bg-gray-800 text-red-400" 
                 : "hover:bg-gray-400"}`;
 
-  return (
+  return (<>
     <aside 
     onMouseEnter={()=> setIsHover(true)}
     onMouseLeave={()=> setIsHover(false)}
-    className={` ${(isOpen || isHover)? " md:w-1/6 " : "hidden md:w-16"}  bg-gray-600 text-white md:flex flex-col items-center justify-between text-sm md:text-lg overflow-auto h-screen flex-shrink-0`}
+    className={` ${(isOpen || isHover)? " lg:w-1/6 lg:static" : "hidden lg:w-16"} fixed top-0 left-0 z-50 md:static bg-gray-600 text-white md:flex flex-col items-center justify-between text-sm md:text-lg overflow-auto h-screen flex-shrink-0`}
     >
       
       {/* MAIN NAV LINKS */}
@@ -86,7 +86,7 @@ function Sidebar({ isOpen }) {
         {/* nav option */}
         <nav className="flex flex-1 flex-col lg:gap-3 space-y-2 ">
 
-          {/* ✅ CHANGED: <a> → <NavLink> */}
+          {/*  CHANGED: <a> → <NavLink> */}
 
 
           <NavLink to="/" end className={navClass}>
@@ -95,6 +95,7 @@ function Sidebar({ isOpen }) {
               <span>Dashboard</span>
               <IoIosArrowDown />
             </div>)}
+            
           </NavLink>
           
           {/* USER WITH DROPDOWN */}
@@ -278,7 +279,11 @@ function Sidebar({ isOpen }) {
       }
       </div>
     </aside>
-  );
+    <div className={`${!isOpen ? " hidden" : ""}fixed flex justify-end items-start inset-0 z-40 bg-gray-900/50 lg:hidden`}>
+      {isOpen && <span onClick={()=> setSideOpen(false)} className="p-2 m-2 bg-red-300 text-white rounded-lg hover:bg-red-400">x</span>}
+      
+    </div>
+  </>);
 }
 
 export default Sidebar;

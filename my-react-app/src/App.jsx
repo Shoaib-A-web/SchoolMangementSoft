@@ -18,6 +18,7 @@ import Blood from "./pages/Master/blood"
 import State from "./pages/Master/state"
 import Dashboard from "./pages/Dashboard";
 import MainLayOut from "./layouts/Mainlayout";
+import Main2LayOut from "./layouts/main2LayOut";
 import Report from "./pages/Report";
 import TestThing from "./pages/TestThing";
 import General from "./pages/Settings/General";
@@ -45,6 +46,7 @@ import OuterTest from "./components/OuterTest"
 import StudentDetails from "./components/students/StudentDetails";
 import UserDetails from "./components/UserDetails";
 import SchoolList from "./pages/SchoolList";
+import { ImOpt } from "react-icons/im";
 // import reactLogo from './assets/react.svg'  downloaded content while it is installed
 // import viteLogo from '/vite.svg'            downloaded content while it is installed
 // import './App.css'                          downloaded content while it is installed
@@ -75,7 +77,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={ 
                       <RequireAuth>
-                          <MainLayOut />
+                        <MainLayOut />
                       </RequireAuth>
                       }
                     >

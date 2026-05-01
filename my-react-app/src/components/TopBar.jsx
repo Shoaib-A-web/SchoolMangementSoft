@@ -184,7 +184,9 @@ function TopBar({isOpen, sideToggle}){
                         <IoIosArrowDown />
                     </div>
                     { profile && (
-                        <ProfileMenu handelprofiel={handelprofiel}/>
+                        <div>
+                            <ProfileMenu handelprofievl={handelprofiel}/>
+                        </div>
                     )}
                 </button>  
         </div>

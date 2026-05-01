@@ -1,17 +1,64 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Imgdemo from "../../assets/dummy/dummy-user.png";
 import { SchoolContext } from "../../context/SchoolContext";
 import { useForm } from "react-hook-form";
-import { createSchool } from "@/api";
+import { createSchool, deleteSchool, getSchool, updateSchool } from "@/api";
 import { toast } from "react-toastify";
 
 function AddSchool() {
+    const modeOpt= ["Insert Mode", "Update Mode", "Delete Mode"];
+    const [existingLogo, setExistingLogo] = useState(null);
+    const [newSearch, setNewSearch]= useState("");
+    const [mode, setMode] =useState(modeOpt[0]);
     const { setSchoolLogo } = useContext(SchoolContext);
+
+    const handleSearch = async () => {
+
+        if (newSearch.trim() !== ""){
+            try{
+                const res= await getSchool(newSearch);
+                const data = res?.data;
+                reset({
+                    schoolName: data.schoolName || "",
+                    schoolContact: data.schoolContact || "",
+                    email: data.email || "",
+                    website: data.website || "",
+                    schoolAdd: data.schoolAdd || "",
+                    board: data.board || "",
+                    established_year: data.established_year || "",
+                    code: data.code || "",
+                    city: data.city || "",
+                    pincode: data.pincode || "",
+                });
+                 // SET IMAGE URL FROM BACKEND
+                setExistingLogo(data.logo);
+            }catch(errors){alert(errors)}
+            
+        }
+    }
+    const clearForm = () => {
+    reset({
+            schoolName: "",
+            schoolContact: "",
+            email: "",
+            website: "",
+            schoolAdd: "",
+            board: "",
+            established_year: "",
+            code: "",
+            city: "",
+            pincode: "",
+        });
+
+        setExistingLogo(null);   // clear image preview
+        setNewSearch("");        // clear search input
+    };
 
     const {
         register,
         handleSubmit,
         setValue,
+        reset,
         watch,
         formState: { errors, isSubmitting }
     } = useForm({
@@ -29,9 +76,33 @@ function AddSchool() {
         });
 
         try {
-            const res = await createSchool(formData);
-            toast.success(res?.data?.message);
+            let res= "";
+            switch (mode) {
+                
+                case "Insert Mode":
+                    res = await createSchool(formData);
+                    toast.success(res?.data?.message);
+                    clearForm();
+                    break;
+                case "Update Mode":
+                    res = await updateSchool(newSearch,formData)
+                    toast.success(res?.data?.message);
+                    clearForm();
+
+                     break;
+                case "Delete Mode":
+                    res = await deleteSchool(newSearch);
+                    toast.success(res?.data?.message);
+                    clearForm();
+
+                    break;
+                
+                default:
+                    break;
+            }
+            
         } catch (error) {
+            console.log(error)
             toast.error(error?.response?.data?.message || "Error occurred");
         }
     };
@@ -40,6 +111,7 @@ function AddSchool() {
         const file = e.target.files[0];
         setValue("schoolLogo", file);
         setSchoolLogo(file);
+        setExistingLogo(null);    // remove old image
     };
 
     // Reusable Input Field Component
@@ -57,9 +129,35 @@ function AddSchool() {
             )}
         </div>
     );
-
     return (
         <div className="shadow-xl text-gray-700 bg-white font-semibold rounded-lg">
+            <div className="flex flex-col items-center justify-center p-4">
+                <div className="flex items-center justify-center gap-2 p-1 w-1/2 border-2 border-red-200 rounded-lg ">
+                    { modeOpt.map((m,i) => {
+                        return(
+                            <button 
+                            onClick={()=> setMode(m)}
+                            className={`p-2 rounded-lg ${mode === m? "bg-red-500 text-white":"text-gray-600"}`}
+                            key={i}>{m}</button>
+                        )
+                    })}
+                </div>
+                {
+                    mode !== "Insert Mode" && (
+                        <div className="p-2 m-2 space-x-2" >
+                            <input type="number" 
+                            onChange={(e)=> setNewSearch(e.target.value)}
+                            className="p-2 focus:outline-none rounded-lg border-2 border-red-200"
+                            name="SchoolId" placeholder="School Number"/> 
+                            <button 
+                            onClick={handleSearch}
+                            className="p-2 text-white rounded-lg bg-red-500"
+                            type="search">Search</button>
+                        </div>
+                    
+                    )
+                }
+            </div>
             <div className="p-4 text-xl">School Detail</div>
             <hr className="h-[2px] bg-gray-200" />
 
@@ -145,8 +243,9 @@ function AddSchool() {
                             <img
                                 src={
                                     logoPreview
-                                        ? URL.createObjectURL(logoPreview)
-                                        : Imgdemo
+                                        ? URL.createObjectURL(logoPreview)  // new uplaod image
+                                        : existingLogo ? existingLogo       //backend image 
+                                        : Imgdemo                           //fallbace image
                                 }
                                 alt="preview"
                                 className="size-40 rounded-lg border-2"
@@ -216,7 +315,7 @@ function AddSchool() {
                     disabled={isSubmitting}
                     className="bg-red-400 hover:bg-red-500 rounded-lg py-2 text-white"
                 >
-                    {isSubmitting ? "Submitting..." : "Submit"}
+                    {isSubmitting ? "Submiting..." : mode.slice(0, -5) }
                 </button>
             </form>
         </div>

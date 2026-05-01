@@ -14,3 +14,18 @@ export const getSchools = () => {
 export const getSchool = (id) => {
   return axiosInstance.get(`${API_ENDPOINTS.SCHOOLS}/${id}`);
 }
+
+// update school data in school table 
+export const updateSchool = (id, formData) => {
+  formData.append("_method", "PUT"); //  important
+
+  return axiosInstance.post(
+    `${API_ENDPOINTS.SCHOOLS}/${id}`,
+    formData
+  );
+};
+
+// for delete school for school table
+export const deleteSchool = (id) => {
+  return axiosInstance.delete(`${API_ENDPOINTS.SCHOOLS}/${id}`);
+};

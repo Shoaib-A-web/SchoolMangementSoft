@@ -16,7 +16,6 @@ class UserTypeController extends Controller
 {
     // conrolle for user counts
     public function totalUsers(Request $request){
-        Log::info($request->all()); 
         $count = count(UserType::all());
 
         if(!$count){

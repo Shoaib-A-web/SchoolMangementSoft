@@ -11,7 +11,10 @@ const MainLayOut= ()=>{
     return(<>
         <div className="flex h-screen">
             {/* LEFT NAVBAR */}
-            <Sidebar isOpen={sideOpen}/>
+            <Sidebar
+            isOpen={sideOpen}
+            setSideOpen={setSideOpen}
+            />
 
             {/* RIGHT CONTENT */}
             <div className="flex flex-col w-full">
